@@ -36,9 +36,12 @@
 
         /* CONTENT */
         .content-area { flex: 1; position: relative; overflow-y: auto; background: #e2e8f0; }
+        
+        /* BACKGROUND IMAGE [FIXED] */
         .hero-bg { 
             position: absolute; top: 0; left: 0; width: 100%; height: 550px; 
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1582468574898-4a630800e330?q=80&w=2000') center/cover;
+            /* High-quality Thai Train Image */
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1563492065599-3520f775eeed?q=80&w=2000') center/cover;
             z-index: 0; 
         }
         
@@ -161,7 +164,7 @@
 </datalist>
 
 <script>
-    // --- 1. THE MEGA DATABASE (Lines Mapped Correctly) ---
+    // --- 1. THE MEGA DATABASE ---
     const stations = [
         // BTS Sukhumvit (Green)
         {n:"Khu Khot", l:"BTS_G"}, {n:"Mo Chit", l:"BTS_G"}, {n:"Victory Monument", l:"BTS_G"}, {n:"Phaya Thai", l:"BTS_G"},
@@ -188,20 +191,19 @@
         {n:"Bang Sue", l:"Red"}, {n:"Chatuchak", l:"Red"}, {n:"Bang Khen", l:"Red"}, {n:"Lak Si", l:"Red"}, {n:"Don Mueang", l:"Red"}, {n:"Rangsit", l:"Red"}, {n:"Bang Son", l:"Red"},
         // Gold
         {n:"Krung Thon Buri", l:"Gold"}, {n:"Charoen Nakhon", l:"Gold"},
-        // SRT Diesel
+        // SRT Diesel (Must use strict SRT logic)
         {n:"Bangkok (Hua Lamphong)", l:"SRT"}, {n:"Bang Sue Junction", l:"SRT"}, {n:"Ayutthaya", l:"SRT"}, {n:"Lopburi", l:"SRT"},
-        {n:"Chiang Mai", l:"SRT"}, {n:"Hua Hin", l:"SRT"}, {n:"Kanchanaburi", l:"SRT"}, {n:"Pattaya", l:"SRT"}, {n:"Surat Thani", l:"SRT"}, {n:"Lat Krabang", l:"SRT"}
+        {n:"Chiang Mai", l:"SRT"}, {n:"Hua Hin", l:"SRT"}, {n:"Kanchanaburi", l:"SRT"}, {n:"Pattaya", l:"SRT"}, {n:"Surat Thani", l:"SRT"}, {n:"Lat Krabang", l:"SRT"}, {n:"Chachoengsao", l:"SRT"}
     ];
 
     // --- 2. INTERCHANGE MAP (Graph Logic) ---
-    // Defines where lines connect
     const interchanges = {
         "BTS_G-BTS_S": "Siam",
         "BTS_G-MRT_B": "Asok / Sukhumvit", // or Mo Chit
         "BTS_G-ARL": "Phaya Thai",
         "BTS_G-Yellow": "Samrong",
         "BTS_G-Pink": "Wat Phra Sri Mahathat",
-        "BTS_S-MRT_B": "Sala Daeng / Silom", // or Bang Wa
+        "BTS_S-MRT_B": "Sala Daeng / Silom", 
         "BTS_S-Gold": "Krung Thon Buri",
         "MRT_B-ARL": "Phetchaburi / Makkasan",
         "MRT_B-Yellow": "Lat Phrao",
@@ -229,7 +231,6 @@
         const dl = document.getElementById('stations-list');
         dl.innerHTML = "";
         stations.forEach(s => {
-            // Mapping complex line codes to simple filters
             let type = "Other";
             if(s.l.includes("BTS")) type = "BTS";
             if(s.l.includes("MRT")) type = "MRT";
@@ -301,9 +302,15 @@
             }
         }
 
-        // Find Station Objects
-        const startObj = stations.find(s => s.n === startName);
-        const endObj = stations.find(s => s.n === endName);
+        // Find Station Objects (Prefer matching Lines if possible)
+        let startObj = stations.find(s => s.n === startName);
+        let endObj = stations.find(s => s.n === endName);
+        
+        // FIX: If both stations exist in SRT, force SRT to avoid ARL override
+        if (stations.some(s => s.n === startName && s.l === 'SRT') && stations.some(s => s.n === endName && s.l === 'SRT')) {
+            startObj = stations.find(s => s.n === startName && s.l === 'SRT');
+            endObj = stations.find(s => s.n === endName && s.l === 'SRT');
+        }
 
         if(!startObj || !endObj) {
             resBox.style.display = 'block';
@@ -319,7 +326,7 @@
         if (startObj.l === endObj.l) {
             steps.push({ icon:"🚩", text:`Start at <b>${startObj.n}</b>` });
             steps.push({ icon:"🚆", text:`Take <span class="badge bg-${startObj.l}">${getLineName(startObj.l)}</span> to <b>${endObj.n}</b>` });
-            cost = 45; 
+            cost = startObj.l === 'SRT' ? 20 : 45; // Cheap SRT fare
         } 
         // Case 2: Interchange Needed
         else {
@@ -336,7 +343,7 @@
                 steps.push({ icon:"🚆", text:`Switch to <span class="badge bg-${endObj.l}">${getLineName(endObj.l)}</span>` });
                 cost = 70;
             } else {
-                // Indirect (Complex) - Simplified fallback for demo
+                // Indirect (Complex)
                 steps.push({ icon:"🔄", text:`Maps to <b>Central Hub (Siam/Asok)</b>` });
                 steps.push({ icon:"🚆", text:`Switch lines to reach <b>${endObj.n}</b>` });
                 cost = 90;
