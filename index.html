@@ -3,78 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyRail Smart Route | Best Way to Go</title>
+    <title>EasyRail | Best Route Finder</title>
     <style>
-        :root { --primary: #003366; --accent: #ff9900; --bg: #f0f2f5; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
+        :root { 
+            --primary: #003366; 
+            --accent: #ff9900; 
+            --bg: #f4f7f6;
+            /* Line Colors */
+            --bts-g: #76c043; /* Light Green */
+            --bts-s: #006633; /* Dark Green */
+            --mrt-b: #00236a; /* Blue */
+            --mrt-p: #800080; /* Purple */
+            --arl: #8e1f2f;   /* Airport Link */
+            --red: #de1018;   /* Red Line */
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; color: #333; padding-bottom: 60px; }
         
         /* HEADER */
-        header { background: var(--primary); color: white; padding: 1rem 5%; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .logo { font-size: 1.5rem; font-weight: bold; }
+        header { background: var(--primary); color: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .logo { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; }
+        .nav-links { list-style: none; display: flex; gap: 20px; padding: 0; margin: 0; }
+        .nav-links a { color: white; text-decoration: none; opacity: 0.9; font-weight: 500; }
+        .nav-links a:hover { opacity: 1; text-decoration: underline; }
 
-        /* SEARCH CONTAINER */
-        .search-box { background: white; width: 90%; max-width: 600px; margin: 30px auto; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h2 { margin-top: 0; color: var(--primary); text-align: center; }
-        
-        .input-group { position: relative; margin-bottom: 15px; }
-        label { font-weight: bold; display: block; margin-bottom: 5px; color: #555; }
-        input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
-        input:focus { border-color: var(--accent); outline: none; }
+        /* SEARCH HERO */
+        .hero-container { background: white; max-width: 600px; margin: 40px auto; padding: 30px; border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+        h1 { margin-top: 0; color: var(--primary); text-align: center; font-size: 1.8rem; }
+        p.subtitle { text-align: center; color: #666; margin-bottom: 30px; }
 
-        .options { display: flex; gap: 15px; margin-bottom: 20px; justify-content: center; }
-        .radio-label { cursor: pointer; display: flex; align-items: center; gap: 5px; background: #eee; padding: 8px 15px; border-radius: 20px; font-weight: 500; }
-        input[type="radio"]:checked + span { color: var(--primary); font-weight: bold; }
+        .input-group { position: relative; margin-bottom: 20px; }
+        label { font-weight: 700; display: block; margin-bottom: 8px; color: #444; font-size: 0.9rem; }
+        input { width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; box-sizing: border-box; transition: 0.2s; }
+        input:focus { border-color: var(--primary); outline: none; }
 
-        button { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        button:hover { background: #e68a00; transform: translateY(-2px); }
+        .options { display: flex; gap: 10px; margin-bottom: 25px; justify-content: center; }
+        .radio-label { cursor: pointer; display: flex; align-items: center; gap: 6px; background: #f5f5f5; padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
+        .radio-label:hover { background: #e9e9e9; }
+        input[type="radio"] { display: none; }
+        input[type="radio"]:checked + span { color: var(--primary); }
+        .radio-label.selected { background: #e6f0ff; border: 1px solid var(--primary); color: var(--primary); }
+
+        button.search-btn { width: 100%; padding: 16px; background: var(--accent); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3); }
+        button.search-btn:hover { background: #e68a00; transform: translateY(-2px); }
 
         /* RESULTS */
-        .result-card { background: white; max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px; border-left: 6px solid var(--primary); box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: none; }
-        .summary { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        .total-price { font-size: 1.5rem; font-weight: bold; color: #28a745; }
-        .total-time { font-size: 1.1rem; color: #666; }
+        .result-card { background: white; max-width: 600px; margin: 20px auto; padding: 25px; border-radius: 12px; border-left: 6px solid var(--primary); box-shadow: 0 5px 20px rgba(0,0,0,0.05); display: none; animation: slideUp 0.4s ease; }
         
-        .step { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; }
-        .step-icon { background: #eee; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
-        .step-content h4 { margin: 0 0 5px 0; }
-        .step-content p { margin: 0; color: #666; font-size: 0.9rem; }
+        .summary { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid #eee; margin-bottom: 20px; }
+        .total-price { font-size: 1.8rem; font-weight: 800; color: #28a745; }
+        .total-time { font-size: 1.1rem; color: #555; font-weight: 500; }
         
-        /* Line Colors */
-        .line-BTS { color: #76c043; }
-        .line-MRT { color: #00236a; }
-        .line-ARL { color: #8e1f2f; }
-        .line-Walk { color: #777; }
+        .step { display: flex; gap: 18px; margin-bottom: 20px; position: relative; }
+        .step:last-child { margin-bottom: 0; }
+        /* Connecting Line */
+        .step:not(:last-child)::after { content: ''; position: absolute; left: 19px; top: 40px; bottom: -20px; width: 2px; background: #eee; z-index: 0; }
+        
+        .step-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: #eee; z-index: 1; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0; }
+        .step-content { flex: 1; }
+        .step-content h4 { margin: 0 0 4px 0; font-size: 1rem; }
+        .step-content p { margin: 0; color: #777; font-size: 0.9rem; }
+        
+        /* Dynamic Line Colors */
+        .line-BTS-Green { color: var(--bts-g); }
+        .line-BTS-Silom { color: var(--bts-s); }
+        .line-MRT-Blue { color: var(--mrt-b); }
+        .line-MRT-Purple { color: var(--mrt-p); }
+        .line-ARL { color: var(--arl); }
+        .line-Red { color: var(--red); }
+        .line-Walk { color: #888; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">🚀 EasyRail Super-App</div>
+    <div class="logo">🚆 EasyRail</div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Finder</a></li>
+            <li><a href="class-guide.html">Classes</a></li>
+            <li><a href="routes.html">Tourist Spots</a></li>
+        </ul>
+    </nav>
 </header>
 
-<div class="search-box">
-    <h2>Where to?</h2>
+<div class="hero-container">
+    <h1>Where do you want to go?</h1>
+    <p class="subtitle">Search every line: BTS, MRT, ARL & Red Line.</p>
     
     <div class="input-group">
         <label>Start Station</label>
-        <input type="text" id="start" list="stations" placeholder="e.g. Siam">
+        <input type="text" id="start" list="stations" placeholder="e.g. Siam or Suvarnabhumi">
     </div>
 
     <div class="input-group">
         <label>Destination</label>
-        <input type="text" id="end" list="stations" placeholder="e.g. Chatuchak Park">
+        <input type="text" id="end" list="stations" placeholder="e.g. Chatuchak or Don Mueang">
     </div>
 
     <div class="options">
-        <label class="radio-label">
+        <label class="radio-label selected" onclick="selectRadio(this)">
             <input type="radio" name="mode" value="time" checked> <span>⚡ Fastest</span>
         </label>
-        <label class="radio-label">
+        <label class="radio-label" onclick="selectRadio(this)">
             <input type="radio" name="mode" value="price"> <span>💰 Cheapest</span>
         </label>
     </div>
 
-    <button onclick="findRoute()">Find Best Route</button>
+    <button class="search-btn" onclick="findRoute()">Find Best Route</button>
 </div>
 
 <datalist id="stations">
@@ -82,11 +119,24 @@
     <option value="Asok (BTS)">
     <option value="Mo Chit (BTS)">
     <option value="Phaya Thai (BTS)">
+    <option value="Nana (BTS)">
+    <option value="Thong Lo (BTS)">
+    <option value="Victory Monument (BTS)">
+    <option value="Sala Daeng (BTS)">
+    <option value="Saphan Taksin (BTS)">
+    <option value="Bang Wa (BTS)">
     <option value="Sukhumvit (MRT)">
     <option value="Chatuchak Park (MRT)">
+    <option value="Silom (MRT)">
+    <option value="Bang Sue (MRT)">
+    <option value="Hua Lamphong (MRT)">
+    <option value="Sanam Chai (MRT)">
     <option value="Phetchaburi (MRT)">
-    <option value="Makkasan (ARL)">
     <option value="Suvarnabhumi (ARL)">
+    <option value="Makkasan (ARL)">
+    <option value="Phaya Thai (ARL)">
+    <option value="Don Mueang (Red)">
+    <option value="Bang Sue (Red)">
 </datalist>
 
 <div id="result" class="result-card">
@@ -95,75 +145,122 @@
             <div class="total-price" id="res-price">฿0</div>
             <div class="total-time" id="res-time">0 mins</div>
         </div>
-        <div style="text-align: right; font-size: 0.9rem; color: #888;">Best Route</div>
+        <div style="text-align: right;">
+            <span style="background:#e6f0ff; color:var(--primary); padding:5px 10px; border-radius:4px; font-weight:bold; font-size:0.8rem;">BEST ROUTE</span>
+        </div>
     </div>
     <div id="steps-container"></div>
 </div>
 
 <script>
-    // --- 1. THE GRAPH DATA (Mini-Bangkok Network) ---
-    // Nodes = Stations. Edges = Connections {cost, time, type}
-    // "Interchange" means walking between systems (e.g. Asok -> Sukhumvit)
+    // --- 1. FULL NETWORK GRAPH (Main Interchanges & Tourist Spots) ---
+    // Costs are approx standard fares. Times are average travel times.
     
     const network = {
+        // --- CENTRAL INTERCHANGES ---
         "Siam (BTS)": {
-            "Asok (BTS)": { cost: 30, time: 8, line: "BTS", type: "ride" },
-            "Phaya Thai (BTS)": { cost: 25, time: 5, line: "BTS", type: "ride" },
-            "Mo Chit (BTS)": { cost: 44, time: 15, line: "BTS", type: "ride" }
+            "Asok (BTS)": { cost: 30, time: 7, line: "BTS-Green", type: "ride" },
+            "Phaya Thai (BTS)": { cost: 25, time: 5, line: "BTS-Green", type: "ride" },
+            "Mo Chit (BTS)": { cost: 44, time: 12, line: "BTS-Green", type: "ride" },
+            "Sala Daeng (BTS)": { cost: 25, time: 6, line: "BTS-Silom", type: "ride" } // Change platform
         },
         "Asok (BTS)": {
-            "Siam (BTS)": { cost: 30, time: 8, line: "BTS", type: "ride" },
-            "Sukhumvit (MRT)": { cost: 0, time: 5, line: "Walk", type: "transfer" } // Walk 5 mins
+            "Siam (BTS)": { cost: 30, time: 7, line: "BTS-Green", type: "ride" },
+            "Thong Lo (BTS)": { cost: 25, time: 4, line: "BTS-Green", type: "ride" },
+            "Sukhumvit (MRT)": { cost: 0, time: 6, line: "Walk", type: "transfer" } // Interchange
         },
         "Sukhumvit (MRT)": {
-            "Asok (BTS)": { cost: 0, time: 5, line: "Walk", type: "transfer" },
-            "Phetchaburi (MRT)": { cost: 19, time: 3, line: "MRT", type: "ride" },
-            "Chatuchak Park (MRT)": { cost: 35, time: 15, line: "MRT", type: "ride" }
+            "Asok (BTS)": { cost: 0, time: 6, line: "Walk", type: "transfer" },
+            "Phetchaburi (MRT)": { cost: 19, time: 3, line: "MRT-Blue", type: "ride" },
+            "Silom (MRT)": { cost: 25, time: 8, line: "MRT-Blue", type: "ride" },
+            "Chatuchak Park (MRT)": { cost: 35, time: 15, line: "MRT-Blue", type: "ride" }
         },
-        "Phetchaburi (MRT)": {
-            "Sukhumvit (MRT)": { cost: 19, time: 3, line: "MRT", type: "ride" },
-            "Makkasan (ARL)": { cost: 0, time: 7, line: "Walk", type: "transfer" } // Walk 7 mins
-        },
-        "Makkasan (ARL)": {
-            "Phetchaburi (MRT)": { cost: 0, time: 7, line: "Walk", type: "transfer" },
-            "Phaya Thai (ARL)": { cost: 15, time: 5, line: "ARL", type: "ride" },
-            "Suvarnabhumi (ARL)": { cost: 35, time: 22, line: "ARL", type: "ride" }
+        
+        // --- AIRPORT LINKS ---
+        "Phaya Thai (BTS)": {
+            "Siam (BTS)": { cost: 25, time: 5, line: "BTS-Green", type: "ride" },
+            "Victory Monument (BTS)": { cost: 15, time: 3, line: "BTS-Green", type: "ride" },
+            "Phaya Thai (ARL)": { cost: 0, time: 5, line: "Walk", type: "transfer" }
         },
         "Phaya Thai (ARL)": {
-            "Makkasan (ARL)": { cost: 15, time: 5, line: "ARL", type: "ride" },
-            "Phaya Thai (BTS)": { cost: 0, time: 4, line: "Walk", type: "transfer" }
+            "Phaya Thai (BTS)": { cost: 0, time: 5, line: "Walk", type: "transfer" },
+            "Makkasan (ARL)": { cost: 25, time: 8, line: "ARL", type: "ride" },
+            "Suvarnabhumi (ARL)": { cost: 45, time: 26, line: "ARL", type: "ride" }
         },
-        "Phaya Thai (BTS)": {
-            "Phaya Thai (ARL)": { cost: 0, time: 4, line: "Walk", type: "transfer" },
-            "Siam (BTS)": { cost: 25, time: 5, line: "BTS", type: "ride" },
-            "Mo Chit (BTS)": { cost: 35, time: 10, line: "BTS", type: "ride" }
+        "Makkasan (ARL)": {
+            "Phaya Thai (ARL)": { cost: 25, time: 8, line: "ARL", type: "ride" },
+            "Suvarnabhumi (ARL)": { cost: 35, time: 20, line: "ARL", type: "ride" },
+            "Phetchaburi (MRT)": { cost: 0, time: 8, line: "Walk", type: "transfer" }
         },
+        "Phetchaburi (MRT)": {
+            "Makkasan (ARL)": { cost: 0, time: 8, line: "Walk", type: "transfer" },
+            "Sukhumvit (MRT)": { cost: 19, time: 3, line: "MRT-Blue", type: "ride" },
+            "Bang Sue (MRT)": { cost: 30, time: 15, line: "MRT-Blue", type: "ride" }
+        },
+        "Suvarnabhumi (ARL)": {
+            "Makkasan (ARL)": { cost: 35, time: 20, line: "ARL", type: "ride" },
+            "Phaya Thai (ARL)": { cost: 45, time: 26, line: "ARL", type: "ride" }
+        },
+
+        // --- NORTHERN HUB (Mo Chit / Chatuchak / Bang Sue) ---
         "Mo Chit (BTS)": {
-            "Siam (BTS)": { cost: 44, time: 15, line: "BTS", type: "ride" },
-            "Phaya Thai (BTS)": { cost: 35, time: 10, line: "BTS", type: "ride" },
+            "Siam (BTS)": { cost: 44, time: 12, line: "BTS-Green", type: "ride" },
             "Chatuchak Park (MRT)": { cost: 0, time: 4, line: "Walk", type: "transfer" }
         },
         "Chatuchak Park (MRT)": {
             "Mo Chit (BTS)": { cost: 0, time: 4, line: "Walk", type: "transfer" },
-            "Sukhumvit (MRT)": { cost: 35, time: 15, line: "MRT", type: "ride" }
+            "Sukhumvit (MRT)": { cost: 35, time: 15, line: "MRT-Blue", type: "ride" },
+            "Bang Sue (MRT)": { cost: 19, time: 5, line: "MRT-Blue", type: "ride" }
         },
-        "Suvarnabhumi (ARL)": {
-            "Makkasan (ARL)": { cost: 35, time: 22, line: "ARL", type: "ride" }
+        "Bang Sue (MRT)": {
+            "Chatuchak Park (MRT)": { cost: 19, time: 5, line: "MRT-Blue", type: "ride" },
+            "Bang Sue (Red)": { cost: 0, time: 6, line: "Walk", type: "transfer" } // Walk up to Red Line
+        },
+        "Bang Sue (Red)": {
+            "Bang Sue (MRT)": { cost: 0, time: 6, line: "Walk", type: "transfer" },
+            "Don Mueang (Red)": { cost: 35, time: 18, line: "Red", type: "ride" }
+        },
+        "Don Mueang (Red)": {
+            "Bang Sue (Red)": { cost: 35, time: 18, line: "Red", type: "ride" }
+        },
+
+        // --- SILOM AREA ---
+        "Sala Daeng (BTS)": {
+            "Siam (BTS)": { cost: 25, time: 6, line: "BTS-Silom", type: "ride" },
+            "Saphan Taksin (BTS)": { cost: 30, time: 8, line: "BTS-Silom", type: "ride" },
+            "Silom (MRT)": { cost: 0, time: 8, line: "Walk", type: "transfer" } // Skywalk
+        },
+        "Silom (MRT)": {
+            "Sala Daeng (BTS)": { cost: 0, time: 8, line: "Walk", type: "transfer" },
+            "Sukhumvit (MRT)": { cost: 25, time: 8, line: "MRT-Blue", type: "ride" },
+            "Hua Lamphong (MRT)": { cost: 19, time: 4, line: "MRT-Blue", type: "ride" },
+            "Sanam Chai (MRT)": { cost: 25, time: 9, line: "MRT-Blue", type: "ride" }
+        },
+        "Hua Lamphong (MRT)": {
+            "Silom (MRT)": { cost: 19, time: 4, line: "MRT-Blue", type: "ride" },
+            "Sanam Chai (MRT)": { cost: 19, time: 5, line: "MRT-Blue", type: "ride" } // Palace
+        },
+        "Sanam Chai (MRT)": {
+             "Silom (MRT)": { cost: 25, time: 9, line: "MRT-Blue", type: "ride" }
+        },
+        "Saphan Taksin (BTS)": {
+            "Sala Daeng (BTS)": { cost: 30, time: 8, line: "BTS-Silom", type: "ride" }
         }
     };
 
-    // --- 2. DIJKSTRA'S ALGORITHM (The Logic Engine) ---
+    // --- 2. THE ALGORITHM (Dijkstra) ---
     function findRoute() {
         const start = document.getElementById('start').value;
         const end = document.getElementById('end').value;
-        const mode = document.querySelector('input[name="mode"]:checked').value; // 'time' or 'price'
+        const mode = document.querySelector('input[name="mode"]:checked').value;
         
+        if (!start || !end) { alert("Please enter both stations."); return; }
+        if (start === end) { alert("You are already there!"); return; }
         if (!network[start] || !network[end]) {
-            alert("Station not found in this demo! Try 'Siam (BTS)' or 'Suvarnabhumi (ARL)'.");
+            alert("Station not found in database! Try selecting from the dropdown list.");
             return;
         }
 
-        // Setup
         const costs = {};
         const backtrace = {};
         const pq = new PriorityQueue();
@@ -172,16 +269,13 @@
         costs[start] = 0;
         pq.enqueue(start, 0);
 
-        // Algorithm Loop
         while (!pq.isEmpty()) {
             const shortestStep = pq.dequeue();
             const currentNode = shortestStep.element;
-
-            if (currentNode === end) break; // Found it!
+            if (currentNode === end) break; 
 
             for (let neighbor in network[currentNode]) {
                 const edge = network[currentNode][neighbor];
-                // Weight depends on user choice: 'time' (mins) or 'price' (Baht)
                 const weight = mode === 'time' ? edge.time : edge.cost;
                 const newCost = costs[currentNode] + weight;
 
@@ -193,20 +287,20 @@
             }
         }
 
-        // Reconstruct Path
+        // Reconstruct
         const path = [];
         let curr = end;
         while (curr !== start) {
             const step = backtrace[curr];
-            if (!step) { alert("No route found!"); return; }
+            if (!step) { alert("No route possible between these stations."); return; }
             path.unshift({ to: curr, ...step.details });
             curr = step.from;
         }
 
-        displayResult(path, costs[end], mode);
+        displayResult(path);
     }
 
-    // --- 3. HELPER: Priority Queue (Simple Version) ---
+    // --- 3. UI HELPERS ---
     class PriorityQueue {
         constructor() { this.items = []; }
         enqueue(element, priority) {
@@ -225,8 +319,13 @@
         isEmpty() { return this.items.length === 0; }
     }
 
-    // --- 4. DISPLAY RESULT ---
-    function displayResult(path, totalMetric, mode) {
+    function selectRadio(element) {
+        document.querySelectorAll('.radio-label').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        element.querySelector('input').checked = true;
+    }
+
+    function displayResult(path) {
         document.getElementById('result').style.display = 'block';
         const stepsDiv = document.getElementById('steps-container');
         stepsDiv.innerHTML = "";
@@ -238,22 +337,28 @@
             totalPrice += step.cost;
             totalTime += step.time;
 
-            let icon = step.type === 'transfer' ? '🚶' : '🚆';
+            let icon = step.type === 'transfer' ? '👣' : '🚆';
             let title = step.type === 'transfer' ? `Walk to ${step.to}` : `Take ${step.line} to ${step.to}`;
-            let desc = `${step.time} mins • ${step.cost > 0 ? '฿' + step.cost : 'Free'}`;
+            let colorClass = `line-${step.line}`;
             
+            // Nice formatting for "Walk"
+            if (step.line === "Walk") colorClass = "line-Walk";
+
             stepsDiv.innerHTML += `
             <div class="step">
                 <div class="step-icon">${icon}</div>
                 <div class="step-content">
-                    <h4 class="line-${step.line}">${title}</h4>
-                    <p>${desc}</p>
+                    <h4 class="${colorClass}">${title}</h4>
+                    <p>${step.time} mins • ${step.cost > 0 ? '฿'+step.cost : 'Free'}</p>
                 </div>
             </div>`;
         });
 
         document.getElementById('res-price').innerText = `฿${totalPrice}`;
         document.getElementById('res-time').innerText = `${totalTime} mins`;
+        
+        // Auto scroll to result
+        document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
     }
 </script>
 
