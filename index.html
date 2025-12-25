@@ -3,238 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyRail Thailand | Complete Transport Guide</title>
+    <title>EasyRail Smart Route | Best Way to Go</title>
     <style>
-        :root { --primary: #003366; --accent: #ff9900; --bts: #76c043; --mrt: #00236a; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg); color: #333; }
+        :root { --primary: #003366; --accent: #ff9900; --bg: #f0f2f5; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
         
         /* HEADER */
-        header { background-color: var(--primary); color: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .logo { font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; gap: 10px; }
-        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
-        .nav-links a { color: white; text-decoration: none; font-weight: 500; opacity: 0.9; transition: 0.2s; }
-        .nav-links a:hover { opacity: 1; text-decoration: underline; }
+        header { background: var(--primary); color: white; padding: 1rem 5%; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .logo { font-size: 1.5rem; font-weight: bold; }
 
-        /* HERO & TABS */
-        .hero { background: linear-gradient(135deg, #003366 0%, #0055aa 100%); height: 320px; color: white; padding-top: 60px; text-align: center; }
-        .hero h1 { margin: 0; font-size: 2.5rem; }
-        .hero p { opacity: 0.8; margin-top: 10px; font-size: 1.1rem; }
+        /* SEARCH CONTAINER */
+        .search-box { background: white; width: 90%; max-width: 600px; margin: 30px auto; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; color: var(--primary); text-align: center; }
+        
+        .input-group { position: relative; margin-bottom: 15px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; color: #555; }
+        input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+        input:focus { border-color: var(--accent); outline: none; }
 
-        .search-container { background: white; width: 90%; max-width: 900px; margin: -100px auto 40px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); overflow: hidden; }
-        
-        /* Tab Buttons */
-        .tabs { display: flex; background: #eee; }
-        .tab-btn { flex: 1; padding: 20px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; color: #666; background: #eee; transition: 0.2s; }
-        .tab-btn.active { background: white; color: var(--primary); border-top: 4px solid var(--accent); }
-        .tab-icon { margin-right: 8px; }
+        .options { display: flex; gap: 15px; margin-bottom: 20px; justify-content: center; }
+        .radio-label { cursor: pointer; display: flex; align-items: center; gap: 5px; background: #eee; padding: 8px 15px; border-radius: 20px; font-weight: 500; }
+        input[type="radio"]:checked + span { color: var(--primary); font-weight: bold; }
 
-        /* Search Forms */
-        .form-content { padding: 30px; display: none; } /* Hidden by default */
-        .form-content.active { display: block; animation: fadeIn 0.3s; }
-        
-        .input-group { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
-        select, input, button { padding: 15px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
-        input, select { flex: 2; }
-        button.search-btn { flex: 1; background: var(--accent); color: white; border: none; font-weight: bold; cursor: pointer; }
-        button.search-btn:hover { background: #e68a00; }
+        button { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #e68a00; transform: translateY(-2px); }
 
-        /* RESULTS AREA */
-        .results-area { max-width: 900px; margin: 0 auto 50px; padding: 0 5%; }
+        /* RESULTS */
+        .result-card { background: white; max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px; border-left: 6px solid var(--primary); box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: none; }
+        .summary { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .total-price { font-size: 1.5rem; font-weight: bold; color: #28a745; }
+        .total-time { font-size: 1.1rem; color: #666; }
         
-        /* Train Card Style */
-        .ticket-card { background: white; border-radius: 10px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); }
-        .ticket-card.bts-style { border-left-color: var(--bts); }
-        .ticket-card.mrt-style { border-left-color: var(--mrt); }
+        .step { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; }
+        .step-icon { background: #eee; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+        .step-content h4 { margin: 0 0 5px 0; }
+        .step-content p { margin: 0; color: #666; font-size: 0.9rem; }
         
-        .price-tag { font-size: 1.4rem; font-weight: bold; color: var(--primary); }
-        .sub-text { font-size: 0.9rem; color: #666; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Responsive */
-        @media (max-width: 600px) { .input-group { flex-direction: column; } }
+        /* Line Colors */
+        .line-BTS { color: #76c043; }
+        .line-MRT { color: #00236a; }
+        .line-ARL { color: #8e1f2f; }
+        .line-Walk { color: #777; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">🇹🇭 EasyRail Thailand</div>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="class-guide.html">Class Guide</a></li>
-            <li><a href="routes.html">Tourist Routes</a></li>
-        </ul>
-    </nav>
+    <div class="logo">🚀 EasyRail Super-App</div>
 </header>
 
-<section class="hero">
-    <h1>Where do you want to go?</h1>
-    <p>Search Intercity Trains, BTS Skytrain, and MRT Subway.</p>
-</section>
-
-<div class="search-container">
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('intercity')">🚂 Intercity Trains</button>
-        <button class="tab-btn" onclick="switchTab('city')">🏙️ BTS & MRT (Bangkok)</button>
+<div class="search-box">
+    <h2>Where to?</h2>
+    
+    <div class="input-group">
+        <label>Start Station</label>
+        <input type="text" id="start" list="stations" placeholder="e.g. Siam">
     </div>
 
-    <div id="intercity-form" class="form-content active">
-        <div class="input-group">
-            <input type="text" id="train-from" placeholder="From (e.g. Bangkok)">
-            <input type="text" id="train-to" placeholder="To (e.g. Chiang Mai)">
-            <button class="search-btn" onclick="searchIntercity()">Find Trains</button>
-        </div>
-        <p style="color: #666; font-size: 0.9rem;">Popular: Bangkok, Chiang Mai, Ayutthaya, Hua Hin, Surat Thani.</p>
+    <div class="input-group">
+        <label>Destination</label>
+        <input type="text" id="end" list="stations" placeholder="e.g. Chatuchak Park">
     </div>
 
-    <div id="city-form" class="form-content">
-        <div class="input-group">
-            <select id="transport-type" onchange="loadStations()">
-                <option value="BTS">BTS Skytrain (Green Line)</option>
-                <option value="MRT">MRT Subway (Blue Line)</option>
-            </select>
-            <select id="station-from">
-                <option>Select Origin</option>
-            </select>
-            <select id="station-to">
-                <option>Select Destination</option>
-            </select>
-            <button class="search-btn" style="background-color: var(--bts);" onclick="calculateCityFare()">Calculate Fare</button>
-        </div>
-        <p style="color: #666; font-size: 0.9rem;">Tip: Use BTS for Shopping (Siam) and MRT for Old Town (Grand Palace).</p>
+    <div class="options">
+        <label class="radio-label">
+            <input type="radio" name="mode" value="time" checked> <span>⚡ Fastest</span>
+        </label>
+        <label class="radio-label">
+            <input type="radio" name="mode" value="price"> <span>💰 Cheapest</span>
+        </label>
     </div>
+
+    <button onclick="findRoute()">Find Best Route</button>
 </div>
 
-<div id="results" class="results-area"></div>
+<datalist id="stations">
+    <option value="Siam (BTS)">
+    <option value="Asok (BTS)">
+    <option value="Mo Chit (BTS)">
+    <option value="Phaya Thai (BTS)">
+    <option value="Sukhumvit (MRT)">
+    <option value="Chatuchak Park (MRT)">
+    <option value="Phetchaburi (MRT)">
+    <option value="Makkasan (ARL)">
+    <option value="Suvarnabhumi (ARL)">
+</datalist>
+
+<div id="result" class="result-card">
+    <div class="summary">
+        <div>
+            <div class="total-price" id="res-price">฿0</div>
+            <div class="total-time" id="res-time">0 mins</div>
+        </div>
+        <div style="text-align: right; font-size: 0.9rem; color: #888;">Best Route</div>
+    </div>
+    <div id="steps-container"></div>
+</div>
 
 <script>
-    // --- DATASETS ---
-
-    // 1. Intercity Train Data (Mock DB)
-    const longDistanceTrains = [
-        { id: "9", type: "Special Express (CNR)", from: "bangkok", to: "chiang mai", dep: "18:40", arr: "07:15", price: 941 },
-        { id: "51", type: "Express", from: "bangkok", to: "chiang mai", dep: "22:30", arr: "12:10", price: 540 },
-        { id: "83", type: "Express", from: "bangkok", to: "surat thani", dep: "17:00", arr: "04:20", price: 708 },
-        { id: "3", type: "Special Express", from: "bangkok", to: "hua hin", dep: "10:50", arr: "14:15", price: 430 },
-        { id: "75", type: "Rapid", from: "bangkok", to: "ayutthaya", dep: "08:20", arr: "09:40", price: 20 }
-    ];
-
-    // 2. Bangkok Stations Data (Ordered Lists for Calculation)
-    const btsStations = ["Mo Chit", "Saphan Khwai", "Ari", "Sanam Pao", "Victory Monument", "Phaya Thai", "Ratchathewi", "Siam", "Chit Lom", "Phloen Chit", "Nana", "Asok", "Phrom Phong", "Thong Lo", "Ekkamai"];
-    const mrtStations = ["Bang Sue", "Kamphaeng Phet", "Chatuchak Park", "Phahon Yothin", "Lat Phrao", "Ratchadaphisek", "Sutthisan", "Huai Khwang", "Thailand Cultural Centre", "Phra Ram 9", "Phetchaburi", "Sukhumvit", "Queen Sirikit Center", "Khlong Toei", "Lumphini", "Silom"];
-
-    // --- LOGIC ---
-
-    // 1. Switch Tabs
-    function switchTab(tabName) {
-        document.querySelectorAll('.form-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        
-        document.getElementById(tabName + '-form').classList.add('active');
-        // Highlight correct button (Simple logic for 2 buttons)
-        event.target.classList.add('active');
-        
-        // Clear results when switching
-        document.getElementById('results').innerHTML = "";
-    }
-
-    // 2. Load Stations into Dropdowns
-    function loadStations() {
-        const type = document.getElementById('transport-type').value;
-        const list = type === 'BTS' ? btsStations : mrtStations;
-        const color = type === 'BTS' ? 'var(--bts)' : 'var(--mrt)';
-        
-        // Update button color
-        document.querySelector('#city-form .search-btn').style.backgroundColor = color;
-
-        // Helper to fill select box
-        const fill = (id) => {
-            const el = document.getElementById(id);
-            el.innerHTML = "";
-            list.forEach((st, index) => {
-                el.innerHTML += `<option value="${index}">${st}</option>`;
-            });
-        };
-
-        fill('station-from');
-        fill('station-to');
-    }
-
-    // Initialize Stations on Load
-    window.onload = loadStations;
-
-    // 3. Search Intercity Trains
-    function searchIntercity() {
-        const from = document.getElementById('train-from').value.toLowerCase().trim();
-        const to = document.getElementById('train-to').value.toLowerCase().trim();
-        const div = document.getElementById('results');
-        div.innerHTML = "";
-
-        const matches = longDistanceTrains.filter(t => t.from === from && t.to === to);
-
-        if (matches.length > 0) {
-            matches.forEach(t => {
-                div.innerHTML += `
-                <div class="ticket-card">
-                    <div>
-                        <h3>🚂 Train #${t.id} - ${t.type}</h3>
-                        <div class="sub-text">${t.dep} ➔ ${t.arr}</div>
-                    </div>
-                    <div style="text-align:right">
-                        <div class="price-tag">฿${t.price}</div>
-                        <small>per person</small>
-                    </div>
-                </div>`;
-            });
-        } else {
-            div.innerHTML = `<div style="text-align:center; padding:20px; color:#666;">No trains found. Try <b>Bangkok</b> to <b>Chiang Mai</b>.</div>`;
+    // --- 1. THE GRAPH DATA (Mini-Bangkok Network) ---
+    // Nodes = Stations. Edges = Connections {cost, time, type}
+    // "Interchange" means walking between systems (e.g. Asok -> Sukhumvit)
+    
+    const network = {
+        "Siam (BTS)": {
+            "Asok (BTS)": { cost: 30, time: 8, line: "BTS", type: "ride" },
+            "Phaya Thai (BTS)": { cost: 25, time: 5, line: "BTS", type: "ride" },
+            "Mo Chit (BTS)": { cost: 44, time: 15, line: "BTS", type: "ride" }
+        },
+        "Asok (BTS)": {
+            "Siam (BTS)": { cost: 30, time: 8, line: "BTS", type: "ride" },
+            "Sukhumvit (MRT)": { cost: 0, time: 5, line: "Walk", type: "transfer" } // Walk 5 mins
+        },
+        "Sukhumvit (MRT)": {
+            "Asok (BTS)": { cost: 0, time: 5, line: "Walk", type: "transfer" },
+            "Phetchaburi (MRT)": { cost: 19, time: 3, line: "MRT", type: "ride" },
+            "Chatuchak Park (MRT)": { cost: 35, time: 15, line: "MRT", type: "ride" }
+        },
+        "Phetchaburi (MRT)": {
+            "Sukhumvit (MRT)": { cost: 19, time: 3, line: "MRT", type: "ride" },
+            "Makkasan (ARL)": { cost: 0, time: 7, line: "Walk", type: "transfer" } // Walk 7 mins
+        },
+        "Makkasan (ARL)": {
+            "Phetchaburi (MRT)": { cost: 0, time: 7, line: "Walk", type: "transfer" },
+            "Phaya Thai (ARL)": { cost: 15, time: 5, line: "ARL", type: "ride" },
+            "Suvarnabhumi (ARL)": { cost: 35, time: 22, line: "ARL", type: "ride" }
+        },
+        "Phaya Thai (ARL)": {
+            "Makkasan (ARL)": { cost: 15, time: 5, line: "ARL", type: "ride" },
+            "Phaya Thai (BTS)": { cost: 0, time: 4, line: "Walk", type: "transfer" }
+        },
+        "Phaya Thai (BTS)": {
+            "Phaya Thai (ARL)": { cost: 0, time: 4, line: "Walk", type: "transfer" },
+            "Siam (BTS)": { cost: 25, time: 5, line: "BTS", type: "ride" },
+            "Mo Chit (BTS)": { cost: 35, time: 10, line: "BTS", type: "ride" }
+        },
+        "Mo Chit (BTS)": {
+            "Siam (BTS)": { cost: 44, time: 15, line: "BTS", type: "ride" },
+            "Phaya Thai (BTS)": { cost: 35, time: 10, line: "BTS", type: "ride" },
+            "Chatuchak Park (MRT)": { cost: 0, time: 4, line: "Walk", type: "transfer" }
+        },
+        "Chatuchak Park (MRT)": {
+            "Mo Chit (BTS)": { cost: 0, time: 4, line: "Walk", type: "transfer" },
+            "Sukhumvit (MRT)": { cost: 35, time: 15, line: "MRT", type: "ride" }
+        },
+        "Suvarnabhumi (ARL)": {
+            "Makkasan (ARL)": { cost: 35, time: 22, line: "ARL", type: "ride" }
         }
-    }
+    };
 
-    // 4. Calculate City Fare (Algorithm)
-    function calculateCityFare() {
-        const type = document.getElementById('transport-type').value;
-        const fromIdx = parseInt(document.getElementById('station-from').value);
-        const toIdx = parseInt(document.getElementById('station-to').value);
-        const div = document.getElementById('results');
+    // --- 2. DIJKSTRA'S ALGORITHM (The Logic Engine) ---
+    function findRoute() {
+        const start = document.getElementById('start').value;
+        const end = document.getElementById('end').value;
+        const mode = document.querySelector('input[name="mode"]:checked').value; // 'time' or 'price'
         
-        // Basic Algorithm: Base fare + (Stations Traveled * Cost Per Station)
-        // BTS: Start 16, +3 per station (approx)
-        // MRT: Start 17, +2 per station (approx)
-        
-        const stationsTraveled = Math.abs(fromIdx - toIdx);
-        let price = 0;
-        let time = stationsTraveled * 3; // Approx 3 mins per station
-
-        if (type === 'BTS') {
-            price = 16 + (stationsTraveled * 3);
-            if (price > 59) price = 59; // Max fare cap
-        } else {
-            price = 17 + (stationsTraveled * 2);
-            if (price > 42) price = 42; // Max fare cap
-        }
-
-        if (fromIdx === toIdx) {
-            div.innerHTML = `<p style="text-align:center; color:red;">Please select two different stations.</p>`;
+        if (!network[start] || !network[end]) {
+            alert("Station not found in this demo! Try 'Siam (BTS)' or 'Suvarnabhumi (ARL)'.");
             return;
         }
 
-        const fromName = type === 'BTS' ? btsStations[fromIdx] : mrtStations[fromIdx];
-        const toName = type === 'BTS' ? btsStations[toIdx] : mrtStations[toIdx];
-        const styleClass = type === 'BTS' ? 'bts-style' : 'mrt-style';
+        // Setup
+        const costs = {};
+        const backtrace = {};
+        const pq = new PriorityQueue();
 
-        div.innerHTML = `
-        <div class="ticket-card ${styleClass}">
-            <div>
-                <h3>${type}: ${fromName} ➔ ${toName}</h3>
-                <div class="sub-text">Stops: ${stationsTraveled} | Approx Time: ${time} mins</div>
-            </div>
-            <div style="text-align:right">
-                <div class="price-tag">฿${price}</div>
-                <small>One-way Ticket</small>
-            </div>
-        </div>`;
+        for (let node in network) costs[node] = Infinity;
+        costs[start] = 0;
+        pq.enqueue(start, 0);
+
+        // Algorithm Loop
+        while (!pq.isEmpty()) {
+            const shortestStep = pq.dequeue();
+            const currentNode = shortestStep.element;
+
+            if (currentNode === end) break; // Found it!
+
+            for (let neighbor in network[currentNode]) {
+                const edge = network[currentNode][neighbor];
+                // Weight depends on user choice: 'time' (mins) or 'price' (Baht)
+                const weight = mode === 'time' ? edge.time : edge.cost;
+                const newCost = costs[currentNode] + weight;
+
+                if (newCost < costs[neighbor]) {
+                    costs[neighbor] = newCost;
+                    backtrace[neighbor] = { from: currentNode, details: edge };
+                    pq.enqueue(neighbor, newCost);
+                }
+            }
+        }
+
+        // Reconstruct Path
+        const path = [];
+        let curr = end;
+        while (curr !== start) {
+            const step = backtrace[curr];
+            if (!step) { alert("No route found!"); return; }
+            path.unshift({ to: curr, ...step.details });
+            curr = step.from;
+        }
+
+        displayResult(path, costs[end], mode);
+    }
+
+    // --- 3. HELPER: Priority Queue (Simple Version) ---
+    class PriorityQueue {
+        constructor() { this.items = []; }
+        enqueue(element, priority) {
+            const qElement = { element, priority };
+            let added = false;
+            for (let i = 0; i < this.items.length; i++) {
+                if (this.items[i].priority > qElement.priority) {
+                    this.items.splice(i, 0, qElement);
+                    added = true;
+                    break;
+                }
+            }
+            if (!added) this.items.push(qElement);
+        }
+        dequeue() { return this.items.shift(); }
+        isEmpty() { return this.items.length === 0; }
+    }
+
+    // --- 4. DISPLAY RESULT ---
+    function displayResult(path, totalMetric, mode) {
+        document.getElementById('result').style.display = 'block';
+        const stepsDiv = document.getElementById('steps-container');
+        stepsDiv.innerHTML = "";
+        
+        let totalPrice = 0;
+        let totalTime = 0;
+
+        path.forEach(step => {
+            totalPrice += step.cost;
+            totalTime += step.time;
+
+            let icon = step.type === 'transfer' ? '🚶' : '🚆';
+            let title = step.type === 'transfer' ? `Walk to ${step.to}` : `Take ${step.line} to ${step.to}`;
+            let desc = `${step.time} mins • ${step.cost > 0 ? '฿' + step.cost : 'Free'}`;
+            
+            stepsDiv.innerHTML += `
+            <div class="step">
+                <div class="step-icon">${icon}</div>
+                <div class="step-content">
+                    <h4 class="line-${step.line}">${title}</h4>
+                    <p>${desc}</p>
+                </div>
+            </div>`;
+        });
+
+        document.getElementById('res-price').innerText = `฿${totalPrice}`;
+        document.getElementById('res-time').innerText = `${totalTime} mins`;
     }
 </script>
 
