@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Guide | EasyRail Thailand</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #f8f9fa; color: #333; }
+        header { background-color: #003366; color: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; }
+        
+        .container { max-width: 1000px; margin: 40px auto; padding: 20px; }
+        .class-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 30px; display: flex; flex-wrap: wrap; }
+        .class-img { flex: 1; min-width: 300px; height: 250px; background-size: cover; background-position: center; }
+        .class-info { flex: 1.5; padding: 25px; }
+        h2 { color: #003366; margin-top: 0; }
+        .badge { background: #ff9900; color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-size: 1.5rem; font-weight: bold;">🚆 EasyRail Thailand</div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="class-guide.html">Class Guide</a></li>
+            <li><a href="routes.html">Popular Routes</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <h1>Which ticket should you buy?</h1>
+    
+    <div class="class-card">
+        <div class="class-img" style="background-image: url('https://thaitrainguide.com/wp-content/uploads/2016/11/IMG_9721.jpg');"></div>
+        <div class="class-info">
+            <h2>1st Class Sleeper <span class="badge">Best for Privacy</span></h2>
+            <p>Private lockable cabin for 2 people. Includes a washbasin, power outlet, and A/C. Perfect for couples or solo travelers who want security.</p>
+            <p><strong>Price Range:</strong> ฿1,400 - ฿1,700</p>
+        </div>
+    </div>
+
+    <div class="class-card">
+        <div class="class-img" style="background-image: url('https://thaitrainguide.com/wp-content/uploads/2021/03/SRT-CNR-2nd-Class-Sleeper-06.jpg');"></div>
+        <div class="class-info">
+            <h2>2nd Class Sleeper (A/C) <span class="badge">Most Popular</span></h2>
+            <p>Open plan carriage with bunk beds. Each bed has a privacy curtain. Clean, comfortable, and social. Upper bunks are slightly cheaper.</p>
+            <p><strong>Price Range:</strong> ฿800 - ฿1,050</p>
+        </div>
+    </div>
+
+    <div class="class-card">
+        <div class="class-img" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/4e/SRT_Third_Class_Interior.jpg');"></div>
+        <div class="class-info">
+            <h2>3rd Class Fan <span class="badge">Budget Choice</span></h2>
+            <p>Hard benches with open windows. No A/C. Very cheap and authentic, but can be tiring for long overnight trips.</p>
+            <p><strong>Price Range:</strong> ฿200 - ฿300</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
