@@ -32,15 +32,12 @@
         .nav-btn { width: 100%; padding: 12px 16px; border: none; border-radius: 8px; background: transparent; color: #ced6e0; text-align: left; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; font-weight: 500; }
         .nav-btn:hover { background: rgba(255,255,255,0.05); color: white; padding-left: 20px; }
         .nav-btn.active { background: var(--accent); color: #1e272e; font-weight: 700; box-shadow: 0 4px 15px rgba(255, 165, 2, 0.3); }
-        
-        /* Special styles for tool buttons */
         .tool-btn { background: rgba(255,255,255,0.08); margin-bottom: 8px; }
 
         /* CONTENT AREA */
         .content-area { flex: 1; position: relative; overflow-y: auto; background: #333; }
         .hero-bg { 
             position: absolute; top: 0; left: 0; width: 100%; height: 600px; 
-            /* Stable Background Image */
             background: linear-gradient(rgba(0,51,102,0.6), rgba(0,51,102,0.8)), url('https://images.unsplash.com/photo-1596715694723-a567674c0587?q=80&w=2000') center/cover;
             z-index: 0; 
         }
@@ -71,6 +68,12 @@
         .step:not(:last-child)::after { content: ''; position: absolute; left: 24px; top: 50px; bottom: -20px; width: 4px; background: #dfe4ea; border-radius: 2px; }
         .step-icon { width: 50px; height: 50px; border-radius: 50%; background: white; border: 3px solid #dfe4ea; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; z-index: 2; flex-shrink: 0; }
         
+        /* MAP MODAL */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 10px; border-radius: 4px; width: 95%; height: 90%; overflow: auto; position: relative; display: flex; justify-content: center; align-items: center; }
+        .close-map { position: absolute; top: 20px; right: 20px; background: #ff4757; color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; cursor: pointer; z-index: 10000; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .map-img { max-width: 100%; max-height: 100%; display: block; object-fit: contain; }
+
         /* LINE COLORS */
         .bg-BTS { color: var(--bts-g); } .bg-MRT { color: var(--mrt-b); } .bg-ARL { color: var(--arl); } 
         .bg-SRT { color: var(--srt); } .bg-Red { color: var(--red); }
@@ -165,7 +168,7 @@
 </datalist>
 
 <script>
-    // --- 1. FULL DATABASE (Every Station) ---
+    // --- 1. FULL DATABASE (Expanded) ---
     const allStationsData = [
         // --- BTS Sukhumvit (Green) ---
         {name: "Khu Khot (BTS)", type: "BTS"}, {name: "Mo Chit (BTS)", type: "BTS"}, {name: "Victory Monument (BTS)", type: "BTS"},
@@ -189,13 +192,43 @@
         {name: "Lat Phrao (Yellow)", type: "Monorail"}, {name: "Samrong (Yellow)", type: "Monorail"}, 
         {name: "Min Buri (Pink)", type: "Monorail"}, {name: "Nonthaburi (Pink)", type: "Monorail"},
         {name: "Charoen Nakhon (Gold)", type: "Monorail"},
-        // --- DIESEL / INTERCITY ---
+        // --- DIESEL / INTERCITY (Huge Expansion) ---
         {name: "Lat Krabang (SRT)", type: "SRT"}, {name: "Hua Lamphong (SRT)", type: "SRT"},
-        {name: "Bang Sue (SRT)", type: "SRT"}, {name: "Don Mueang (SRT)", type: "SRT"},
-        {name: "Ayutthaya (SRT)", type: "SRT"}, {name: "Lopburi (SRT)", type: "SRT"}, {name: "Chiang Mai (SRT)", type: "SRT"},
-        {name: "Hua Hin (SRT)", type: "SRT"}, {name: "Surat Thani (SRT)", type: "SRT"}, {name: "Kanchanaburi (SRT)", type: "SRT"},
-        {name: "Pattaya (SRT)", type: "SRT"}, {name: "Nong Khai (SRT)", type: "SRT"}, {name: "Ubon Ratchathani (SRT)", type: "SRT"},
-        {name: "Hat Yai (SRT)", type: "SRT"}
+        {name: "Sam Sen (SRT)", type: "SRT"}, {name: "Bang Sue (SRT)", type: "SRT"}, 
+        {name: "Bang Khen (SRT)", type: "SRT"}, {name: "Lak Si (SRT)", type: "SRT"},
+        {name: "Don Mueang (SRT)", type: "SRT"}, {name: "Rangsit (SRT)", type: "SRT"},
+        // Northern Line
+        {name: "Ayutthaya (SRT)", type: "SRT"}, {name: "Ban Phachi (SRT)", type: "SRT"},
+        {name: "Lopburi (SRT)", type: "SRT"}, {name: "Nakhon Sawan (SRT)", type: "SRT"},
+        {name: "Phichit (SRT)", type: "SRT"}, {name: "Phitsanulok (SRT)", type: "SRT"},
+        {name: "Uttaradit (SRT)", type: "SRT"}, {name: "Den Chai (SRT)", type: "SRT"},
+        {name: "Nakhon Lampang (SRT)", type: "SRT"}, {name: "Lamphun (SRT)", type: "SRT"},
+        {name: "Chiang Mai (SRT)", type: "SRT"},
+        // Northeastern Line
+        {name: "Saraburi (SRT)", type: "SRT"}, {name: "Pak Chong (SRT)", type: "SRT"},
+        {name: "Nakhon Ratchasima (SRT)", type: "SRT"}, {name: "Buriram (SRT)", type: "SRT"},
+        {name: "Surin (SRT)", type: "SRT"}, {name: "Sisaket (SRT)", type: "SRT"},
+        {name: "Ubon Ratchathani (SRT)", type: "SRT"}, {name: "Khon Kaen (SRT)", type: "SRT"},
+        {name: "Udon Thani (SRT)", type: "SRT"}, {name: "Nong Khai (SRT)", type: "SRT"},
+        // Southern Line
+        {name: "Bang Bamru (SRT)", type: "SRT"}, {name: "Taling Chan (SRT)", type: "SRT"},
+        {name: "Salaya (SRT)", type: "SRT"}, {name: "Nakhon Pathom (SRT)", type: "SRT"},
+        {name: "Ratchaburi (SRT)", type: "SRT"}, {name: "Phetchaburi (SRT)", type: "SRT"},
+        {name: "Hua Hin (SRT)", type: "SRT"}, {name: "Prachuap Khiri Khan (SRT)", type: "SRT"},
+        {name: "Chumphon (SRT)", type: "SRT"}, {name: "Surat Thani (SRT)", type: "SRT"},
+        {name: "Nakhon Si Thammarat (SRT)", type: "SRT"}, {name: "Phatthalung (SRT)", type: "SRT"},
+        {name: "Hat Yai (SRT)", type: "SRT"}, {name: "Yala (SRT)", type: "SRT"},
+        {name: "Su-ngai Kolok (SRT)", type: "SRT"}, {name: "Padang Besar (SRT)", type: "SRT"},
+        // Eastern Line
+        {name: "Makkasan (SRT)", type: "SRT"}, {name: "Hua Mak (SRT)", type: "SRT"},
+        {name: "Chachoengsao (SRT)", type: "SRT"}, {name: "Prachin Buri (SRT)", type: "SRT"},
+        {name: "Aranyaprathet (SRT)", type: "SRT"}, {name: "Chonburi (SRT)", type: "SRT"},
+        {name: "Pattaya (SRT)", type: "SRT"}, {name: "Ban Phlu Ta Luang (SRT)", type: "SRT"},
+        // Kanchanaburi Line
+        {name: "Thon Buri (SRT)", type: "SRT"}, {name: "Kanchanaburi (SRT)", type: "SRT"},
+        {name: "River Kwai Bridge (SRT)", type: "SRT"}, {name: "Nam Tok (SRT)", type: "SRT"},
+        // Maeklong Line
+        {name: "Wongwian Yai (SRT)", type: "SRT"}, {name: "Maha Chai (SRT)", type: "SRT"}
     ];
 
     const landmarks = {
