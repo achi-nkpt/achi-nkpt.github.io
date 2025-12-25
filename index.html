@@ -8,7 +8,7 @@
     <style>
         :root { 
             --sidebar-bg: #1e272e; --primary: #003366; --accent: #ffa502; --bg: #f1f2f6;
-            /* Official Line Colors */
+            /* Line Colors */
             --bts-g: #2ecc71; --bts-s: #009432; --mrt-b: #0984e3; --mrt-p: #8e44ad; 
             --arl: #741b47; --red: #e74c3c; --srt: #e67e22;
             --yl: #f1c40f; --pk: #ff9ff3; --gold: #d4ac0d;
@@ -37,6 +37,7 @@
         .content-area { flex: 1; position: relative; overflow-y: auto; background: #333; }
         .hero-bg { 
             position: absolute; top: 0; left: 0; width: 100%; height: 600px; 
+            /* Stable Background Image */
             background: linear-gradient(rgba(0,51,102,0.6), rgba(0,51,102,0.8)), url('https://images.unsplash.com/photo-1596715694723-a567674c0587?q=80&w=2000') center/cover;
             z-index: 0; 
         }
@@ -67,22 +68,8 @@
         .step:not(:last-child)::after { content: ''; position: absolute; left: 24px; top: 50px; bottom: -20px; width: 4px; background: #dfe4ea; border-radius: 2px; }
         .step-icon { width: 50px; height: 50px; border-radius: 50%; background: white; border: 3px solid #dfe4ea; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; z-index: 2; flex-shrink: 0; }
         
-        /* MAP MODAL (Using User's Link) */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
-        .modal-content { 
-            background: white; 
-            padding: 10px;
-            border-radius: 4px; 
-            width: 95%; 
-            height: 90%; 
-            overflow: auto; 
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .close-map { position: absolute; top: 20px; right: 20px; background: #ff4757; color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; cursor: pointer; z-index: 10000; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .map-img { max-width: 100%; max-height: 100%; display: block; object-fit: contain; }
+        .srt-link { display: inline-block; margin-top: 15px; padding: 10px 20px; background: #e67e22; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
+        .srt-link:hover { background: #d35400; }
 
         /* LINE COLORS */
         .bg-BTS { color: var(--bts-g); } .bg-MRT { color: var(--mrt-b); } .bg-ARL { color: var(--arl); } 
@@ -126,7 +113,9 @@
 
         <div class="sidebar-group">
             <div class="label">Tools</div>
-            <button class="nav-btn" onclick="openMap()">🗺️ Full System Map</button>
+            <button class="nav-btn" onclick="window.open('https://www.bangkoktransitmap.com/', '_blank')">
+                🗺️ Full System Map
+            </button>
         </div>
     </div>
 
@@ -157,13 +146,6 @@
     </div>
 </div>
 
-<div id="mapModal" class="modal" onclick="closeMap()">
-    <button class="close-map">CLOSE MAP X</button>
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYksp-gdRWveRJ9q0TooyvbtKAW6qndSEpog&s" alt="Bangkok Rail Map" class="map-img">
-    </div>
-</div>
-
 <datalist id="stations-list"></datalist>
 
 <datalist id="landmarks-list">
@@ -183,91 +165,34 @@
     // --- 1. FULL DATABASE (Every Station) ---
     const allStationsData = [
         // --- BTS Sukhumvit (Green) ---
-        {name: "Khu Khot (BTS)", type: "BTS"}, {name: "Yaek Kor Por Aor (BTS)", type: "BTS"}, {name: "Royal Thai Air Force Museum (BTS)", type: "BTS"},
-        {name: "Bhumibol Adulyadej Hospital (BTS)", type: "BTS"}, {name: "Saphan Mai (BTS)", type: "BTS"}, {name: "Sai Yud (BTS)", type: "BTS"},
-        {name: "Phahon Yothin 59 (BTS)", type: "BTS"}, {name: "Wat Phra Sri Mahathat (BTS)", type: "BTS"}, {name: "11th Infantry Regiment (BTS)", type: "BTS"},
-        {name: "Bang Bua (BTS)", type: "BTS"}, {name: "Royal Forest Department (BTS)", type: "BTS"}, {name: "Kasetsart University (BTS)", type: "BTS"},
-        {name: "Sena Nikhom (BTS)", type: "BTS"}, {name: "Ratchayothin (BTS)", type: "BTS"}, {name: "Phahon Yothin 24 (BTS)", type: "BTS"},
-        {name: "Ha Yaek Lat Phrao (BTS)", type: "BTS"}, {name: "Mo Chit (BTS)", type: "BTS"}, {name: "Saphan Khwai (BTS)", type: "BTS"},
-        {name: "Ari (BTS)", type: "BTS"}, {name: "Sanam Pao (BTS)", type: "BTS"}, {name: "Victory Monument (BTS)", type: "BTS"},
-        {name: "Phaya Thai (BTS)", type: "BTS"}, {name: "Ratchathewi (BTS)", type: "BTS"}, {name: "Siam (BTS)", type: "BTS"}, 
-        {name: "Chit Lom (BTS)", type: "BTS"}, {name: "Phloen Chit (BTS)", type: "BTS"}, {name: "Nana (BTS)", type: "BTS"},
-        {name: "Asok (BTS)", type: "BTS"}, {name: "Phrom Phong (BTS)", type: "BTS"}, {name: "Thong Lo (BTS)", type: "BTS"},
-        {name: "Ekkamai (BTS)", type: "BTS"}, {name: "Phra Khanong (BTS)", type: "BTS"}, {name: "On Nut (BTS)", type: "BTS"}, 
-        {name: "Bang Chak (BTS)", type: "BTS"}, {name: "Punnawithi (BTS)", type: "BTS"}, {name: "Udom Suk (BTS)", type: "BTS"},
-        {name: "Bang Na (BTS)", type: "BTS"}, {name: "Bearing (BTS)", type: "BTS"}, {name: "Samrong (BTS)", type: "BTS"}, 
-        {name: "Pu Chao (BTS)", type: "BTS"}, {name: "Chang Erawan (BTS)", type: "BTS"}, {name: "Royal Thai Naval Academy (BTS)", type: "BTS"},
-        {name: "Pak Nam (BTS)", type: "BTS"}, {name: "Srinagarindra (BTS)", type: "BTS"}, {name: "Phraek Sa (BTS)", type: "BTS"},
-        {name: "Sai Luat (BTS)", type: "BTS"}, {name: "Kheha (BTS)", type: "BTS"},
-
+        {name: "Khu Khot (BTS)", type: "BTS"}, {name: "Mo Chit (BTS)", type: "BTS"}, {name: "Victory Monument (BTS)", type: "BTS"},
+        {name: "Phaya Thai (BTS)", type: "BTS"}, {name: "Siam (BTS)", type: "BTS"}, {name: "Asok (BTS)", type: "BTS"}, 
+        {name: "Thong Lo (BTS)", type: "BTS"}, {name: "Ekkamai (BTS)", type: "BTS"}, {name: "On Nut (BTS)", type: "BTS"}, 
+        {name: "Bang Na (BTS)", type: "BTS"}, {name: "Bearing (BTS)", type: "BTS"}, {name: "Kheha (BTS)", type: "BTS"},
         // --- BTS Silom (Dark Green) ---
-        {name: "National Stadium (BTS)", type: "BTS"}, {name: "Ratchadamri (BTS)", type: "BTS"}, {name: "Sala Daeng (BTS)", type: "BTS"},
-        {name: "Chong Nonsi (BTS)", type: "BTS"}, {name: "Saint Louis (BTS)", type: "BTS"}, {name: "Surasak (BTS)", type: "BTS"},
-        {name: "Saphan Taksin (BTS)", type: "BTS"}, {name: "Krung Thon Buri (BTS)", type: "BTS"}, {name: "Wongwian Yai (BTS)", type: "BTS"},
-        {name: "Pho Nimit (BTS)", type: "BTS"}, {name: "Talat Phlu (BTS)", type: "BTS"}, {name: "Wutthakat (BTS)", type: "BTS"},
+        {name: "National Stadium (BTS)", type: "BTS"}, {name: "Sala Daeng (BTS)", type: "BTS"}, {name: "Saphan Taksin (BTS)", type: "BTS"},
         {name: "Bang Wa (BTS)", type: "BTS"},
-
-        // --- MRT Blue Line ---
-        {name: "Tha Phra (MRT)", type: "MRT"}, {name: "Charan 13 (MRT)", type: "MRT"}, {name: "Fai Chai (MRT)", type: "MRT"},
-        {name: "Bang Khun Non (MRT)", type: "MRT"}, {name: "Bang Yi Khan (MRT)", type: "MRT"}, {name: "Sirindhorn (MRT)", type: "MRT"},
-        {name: "Bang Phlat (MRT)", type: "MRT"}, {name: "Bang O (MRT)", type: "MRT"}, {name: "Bang Pho (MRT)", type: "MRT"},
-        {name: "Tao Poon (MRT)", type: "MRT"}, {name: "Bang Sue (MRT)", type: "MRT"}, {name: "Kamphaeng Phet (MRT)", type: "MRT"},
-        {name: "Chatuchak Park (MRT)", type: "MRT"}, {name: "Phahon Yothin (MRT)", type: "MRT"}, {name: "Lat Phrao (MRT)", type: "MRT"},
-        {name: "Ratchadaphisek (MRT)", type: "MRT"}, {name: "Sutthisan (MRT)", type: "MRT"}, {name: "Huai Khwang (MRT)", type: "MRT"},
-        {name: "Thailand Cultural Centre (MRT)", type: "MRT"}, {name: "Phra Ram 9 (MRT)", type: "MRT"}, {name: "Phetchaburi (MRT)", type: "MRT"},
-        {name: "Sukhumvit (MRT)", type: "MRT"}, {name: "Queen Sirikit Center (MRT)", type: "MRT"}, {name: "Khlong Toei (MRT)", type: "MRT"},
-        {name: "Lumphini (MRT)", type: "MRT"}, {name: "Silom (MRT)", type: "MRT"}, {name: "Sam Yan (MRT)", type: "MRT"},
-        {name: "Hua Lamphong (MRT)", type: "MRT"}, {name: "Wat Mangkon (MRT)", type: "MRT"}, {name: "Sam Yot (MRT)", type: "MRT"},
-        {name: "Sanam Chai (MRT)", type: "MRT"}, {name: "Itsaraphap (MRT)", type: "MRT"}, {name: "Bang Phai (MRT)", type: "MRT"},
-        {name: "Bang Wa (MRT)", type: "MRT"}, {name: "Phetkasem 48 (MRT)", type: "MRT"}, {name: "Phasi Charoen (MRT)", type: "MRT"},
-        {name: "Bang Khae (MRT)", type: "MRT"}, {name: "Lak Song (MRT)", type: "MRT"},
-
-        // --- MRT Purple Line ---
-        {name: "Khlong Bang Phai (MRT)", type: "MRT"}, {name: "Talad Bang Yai (MRT)", type: "MRT"}, {name: "Sam Yaek Bang Yai (MRT)", type: "MRT"},
-        {name: "Bang Phlu (MRT)", type: "MRT"}, {name: "Bang Rak Yai (MRT)", type: "MRT"}, {name: "Bang Rak Noi Tha It (MRT)", type: "MRT"},
-        {name: "Sai Ma (MRT)", type: "MRT"}, {name: "Phra Nangklao Bridge (MRT)", type: "MRT"}, {name: "Yaek Nonthaburi 1 (MRT)", type: "MRT"},
-        {name: "Bang Krasor (MRT)", type: "MRT"}, {name: "Nonthaburi Civic Center (MRT)", type: "MRT"}, {name: "Ministry of Public Health (MRT)", type: "MRT"},
-        {name: "Yaek Tiwanon (MRT)", type: "MRT"}, {name: "Wong Sawang (MRT)", type: "MRT"}, {name: "Bang Son (MRT)", type: "MRT"},
-
-        // --- Airport Rail Link (ARL) ---
-        {name: "Suvarnabhumi (ARL)", type: "Airport"}, {name: "Lat Krabang (ARL)", type: "Airport"}, 
-        {name: "Ban Thap Chang (ARL)", type: "Airport"}, {name: "Hua Mak (ARL)", type: "Airport"},
-        {name: "Ramkhamhaeng (ARL)", type: "Airport"}, {name: "Makkasan (ARL)", type: "Airport"}, 
-        {name: "Ratchaprarop (ARL)", type: "Airport"}, {name: "Phaya Thai (ARL)", type: "Airport"},
-
-        // --- SRT Red Lines ---
-        {name: "Rangsit (Red)", type: "Airport"}, {name: "Lak Hok (Red)", type: "Airport"}, {name: "Don Mueang (Red)", type: "Airport"},
-        {name: "Kan Kheha (Red)", type: "Airport"}, {name: "Lak Si (Red)", type: "Airport"}, {name: "Thung Song Hong (Red)", type: "Airport"},
-        {name: "Bang Khen (Red)", type: "Airport"}, {name: "Wat Samian Nari (Red)", type: "Airport"}, {name: "Chatuchak (Red)", type: "Airport"},
-        {name: "Bang Sue (Red)", type: "Airport"}, {name: "Bang Son (Red)", type: "Airport"}, {name: "Bang Bamru (Red)", type: "Airport"},
-        {name: "Taling Chan (Red)", type: "Airport"},
-
-        // --- Gold Line ---
-        {name: "Krung Thon Buri (Gold)", type: "Monorail"}, {name: "Charoen Nakhon (Gold)", type: "Monorail"}, {name: "Khlong San (Gold)", type: "Monorail"},
-
-        // --- Yellow Line (Major Stops) ---
-        {name: "Lat Phrao (Yellow)", type: "Monorail"}, {name: "Bang Kapi (Yellow)", type: "Monorail"}, 
-        {name: "Hua Mak (Yellow)", type: "Monorail"}, {name: "Suan Luang Rama 9 (Yellow)", type: "Monorail"},
-        {name: "Si Iam (Yellow)", type: "Monorail"}, {name: "Samrong (Yellow)", type: "Monorail"},
-
-        // --- Pink Line (Major Stops) ---
-        {name: "Nonthaburi Civic Center (Pink)", type: "Monorail"}, {name: "Chaeng Watthana 14 (Pink)", type: "Monorail"},
-        {name: "Lak Si (Pink)", type: "Monorail"}, {name: "Wat Phra Sri Mahathat (Pink)", type: "Monorail"},
-        {name: "Min Buri (Pink)", type: "Monorail"},
-
-        // --- SRT Diesel / Intercity ---
+        // --- MRT Blue ---
+        {name: "Bang Sue (MRT)", type: "MRT"}, {name: "Chatuchak Park (MRT)", type: "MRT"}, {name: "Sukhumvit (MRT)", type: "MRT"},
+        {name: "Silom (MRT)", type: "MRT"}, {name: "Hua Lamphong (MRT)", type: "MRT"}, {name: "Sanam Chai (MRT)", type: "MRT"},
+        {name: "Wat Mangkon (MRT)", type: "MRT"}, {name: "Lak Song (MRT)", type: "MRT"},
+        // --- MRT Purple ---
+        {name: "Tao Poon (MRT)", type: "MRT"}, {name: "Bang Yai (MRT)", type: "MRT"},
+        // --- Airport & Red ---
+        {name: "Suvarnabhumi (ARL)", type: "Airport"}, {name: "Lat Krabang (ARL)", type: "Airport"},
+        {name: "Makkasan (ARL)", type: "Airport"}, {name: "Phaya Thai (ARL)", type: "Airport"},
+        {name: "Don Mueang (Red)", type: "Airport"}, {name: "Bang Sue (Red)", type: "Airport"}, {name: "Rangsit (Red)", type: "Airport"},
+        // --- Monorails ---
+        {name: "Lat Phrao (Yellow)", type: "Monorail"}, {name: "Samrong (Yellow)", type: "Monorail"}, 
+        {name: "Min Buri (Pink)", type: "Monorail"}, {name: "Nonthaburi (Pink)", type: "Monorail"},
+        {name: "Charoen Nakhon (Gold)", type: "Monorail"},
+        // --- DIESEL / INTERCITY ---
         {name: "Lat Krabang (SRT)", type: "SRT"}, {name: "Hua Lamphong (SRT)", type: "SRT"},
         {name: "Bang Sue (SRT)", type: "SRT"}, {name: "Don Mueang (SRT)", type: "SRT"},
-        {name: "Rangsit (SRT)", type: "SRT"}, {name: "Ayutthaya (SRT)", type: "SRT"}, 
-        {name: "Lopburi (SRT)", type: "SRT"}, {name: "Nakhon Sawan (SRT)", type: "SRT"},
-        {name: "Phitsanulok (SRT)", type: "SRT"}, {name: "Chiang Mai (SRT)", type: "SRT"},
-        {name: "Nakhon Pathom (SRT)", type: "SRT"}, {name: "Ratchaburi (SRT)", type: "SRT"},
-        {name: "Hua Hin (SRT)", type: "SRT"}, {name: "Chumphon (SRT)", type: "SRT"},
-        {name: "Surat Thani (SRT)", type: "SRT"}, {name: "Hat Yai (SRT)", type: "SRT"},
-        {name: "Kanchanaburi (SRT)", type: "SRT"}, {name: "Nam Tok (SRT)", type: "SRT"},
-        {name: "Pattaya (SRT)", type: "SRT"}, {name: "Chachoengsao (SRT)", type: "SRT"},
-        {name: "Aranyaprathet (SRT)", type: "SRT"}, {name: "Nong Khai (SRT)", type: "SRT"},
-        {name: "Ubon Ratchathani (SRT)", type: "SRT"}
+        {name: "Ayutthaya (SRT)", type: "SRT"}, {name: "Lopburi (SRT)", type: "SRT"}, {name: "Chiang Mai (SRT)", type: "SRT"},
+        {name: "Hua Hin (SRT)", type: "SRT"}, {name: "Surat Thani (SRT)", type: "SRT"}, {name: "Kanchanaburi (SRT)", type: "SRT"},
+        {name: "Pattaya (SRT)", type: "SRT"}, {name: "Nong Khai (SRT)", type: "SRT"}, {name: "Ubon Ratchathani (SRT)", type: "SRT"},
+        {name: "Hat Yai (SRT)", type: "SRT"}
     ];
 
     const landmarks = {
@@ -330,7 +255,6 @@
 
         if (!start || !end) { alert("Please fill in both boxes."); return; }
 
-        // CHECK IF START EXISTS
         const stationExists = (name) => allStationsData.some(s => s.name === name);
         if (!stationExists(start)) {
             resBox.style.display = 'block';
@@ -402,6 +326,17 @@
             </div>`;
         }
 
+        // --- SRT SCHEDULE LINK CHECKER ---
+        let srtButton = "";
+        if (line1 === "SRT" || line2 === "SRT") {
+            srtButton = `
+            <div style="text-align:center; margin-top:20px;">
+                <a href="https://www.railway.co.th/SRTTimetable/StationList" target="_blank" class="srt-link">
+                    🕒 Check Official SRT Schedule
+                </a>
+            </div>`;
+        }
+
         resBox.style.display = 'block';
         resBox.innerHTML = `
             <div class="trip-summary">
@@ -439,6 +374,8 @@
                     <p style="color:#e67e22; font-weight:bold;">${landmarkNote}</p>
                 </div>
             </div>
+
+            ${srtButton}
         `;
     }
 
@@ -453,9 +390,6 @@
         if(name.includes("Gold")) return "Monorail";
         return "Rail";
     }
-
-    function openMap() { document.getElementById('mapModal').style.display = 'flex'; }
-    function closeMap() { document.getElementById('mapModal').style.display = 'none'; }
 </script>
 
 </body>
