@@ -12,10 +12,12 @@
             --c-bts-g: #16a34a; --c-bts-s: #15803d; --c-mrt-b: #1d4ed8; --c-mrt-p: #7e22ce; 
             --c-arl: #701a75; --c-red: #b91c1c; --c-gold: #ca8a04; --c-yl: #eab308; --c-pk: #db2777; --c-srt: #854d0e;
         }
+        
+        /* Base Desktop Layout */
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: #1e293b; height: 100vh; display: flex; overflow: hidden; }
         
         /* SIDEBAR */
-        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; padding: 25px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; overflow-y: auto; }
+        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; padding: 25px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; overflow-y: auto; z-index: 20; }
         .logo { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: white; text-decoration: none; }
         
         .nav-section { margin-bottom: 15px; }
@@ -24,15 +26,12 @@
         .nav-btn { width: 100%; padding: 12px 15px; border: none; border-radius: 8px; background: rgba(255,255,255,0.05); color: #cbd5e1; text-align: left; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; font-weight: 500; margin-bottom: 5px; }
         .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
         .nav-btn.active { background: var(--primary); color: white; font-weight: 600; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); border: 1px solid rgba(255,255,255,0.2); }
-        
-        /* External Link Buttons */
         .nav-btn.link { border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94a3b8; }
         .nav-btn.link:hover { border-color: white; color: white; }
 
         /* MAIN CONTENT */
         .main { flex: 1; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
         
-        /* BACKGROUND IMAGE */
         .hero { 
             height: 350px; flex-shrink: 0; position: relative;
             background: linear-gradient(to bottom, rgba(15,23,42,0.5), rgba(15,23,42,0.8)), 
@@ -67,7 +66,6 @@
         .step-info h4 { margin: 0; font-weight: 700; font-size: 1.05rem; }
         .step-info p { margin: 4px 0 0; color: #64748b; font-size: 0.9rem; }
 
-        /* DISCLAIMER */
         .disclaimer { margin-top: 20px; text-align: center; color: #94a3b8; font-size: 0.8rem; font-style: italic; }
         
         /* Line Colors */
@@ -76,7 +74,15 @@
         .bg-ARL { background: var(--c-arl); } .bg-Red { background: var(--c-red); } .bg-SRT { background: var(--c-srt); }
         .bg-Yellow { background: var(--c-yl); } .bg-Pink { background: var(--c-pk); } .bg-Gold { background: var(--c-gold); }
 
-        @media (max-width: 900px) { .main-container { flex-direction: column; height: auto; } .sidebar { width: 100%; box-sizing: border-box; } .hero { height: 350px; } .form-grid { grid-template-columns: 1fr; } }
+        /* --- MOBILE RESPONSIVE FIXES --- */
+        @media (max-width: 900px) { 
+            body { flex-direction: column; overflow: auto; height: auto; } /* Enable scrolling */
+            .sidebar { width: 100%; height: auto; padding: 20px; box-sizing: border-box; } /* Stack sidebar on top */
+            .main { overflow: visible; }
+            .hero { height: 250px; } 
+            .search-container { margin-top: -80px; }
+            .form-grid { grid-template-columns: 1fr; } 
+        }
     </style>
 </head>
 <body>
@@ -368,16 +374,12 @@
                 let next = path[i+1];
                 let dist = 5; 
                 
-                // Specific Logic for SRT -> BTS (Lat Krabang -> Phaya Thai)
-                // Lat Krabang (10) -> Phaya Thai (2) = 8 stations
                 if(curr === 'SRT' && startObj.l === 'SRT') {
                     let interName = (next === 'BTS_G' ? 'Phaya Thai' : 'Bang Sue Junction');
                     let interObj = stations.find(s => s.l === 'SRT' && s.n === interName);
                     if(interObj) dist = Math.abs(startObj.idx - interObj.idx);
                 }
                 
-                // Specific Logic for BTS (Phaya Thai to Siam)
-                // Phaya Thai (21) -> Siam (23) = 2 stations
                 if(curr === 'BTS_G' && next === undefined) {
                     let prevLine = path[i-1];
                     let interName = getInterchange(prevLine, curr); 
@@ -407,7 +409,6 @@
     // --- 7. PRICING ENGINE ---
     function calculateExactFare(line, distance) {
         if(line === "SRT") {
-            // Local City Train (Eastern Line etc)
             if(distance < 15) return 6; 
             return 20 + (distance * 2);
         }
