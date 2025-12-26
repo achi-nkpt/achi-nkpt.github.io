@@ -3,147 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyRail | The Ultimate Bangkok Transit Guide</title>
+    <title>EasyRail | Smart Transit Engine</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --sidebar-bg: #0f172a; --primary: #2563eb; --accent: #f59e0b; --bg: #f8fafc;
-            /* Official Line Colors */
-            --c-bts-g: #16a34a; --c-bts-s: #15803d; --c-mrt-b: #2563eb; --c-mrt-p: #9333ea; 
-            --c-arl: #701a75; --c-red: #dc2626; --c-srt: #b45309;
-            --c-yl: #eab308; --c-pk: #db2777; --c-gold: #ca8a04;
+            --sidebar-bg: #0f172a; --primary: #2563eb; --accent: #f59e0b; --bg: #f1f5f9;
+            /* Line Colors */
+            --c-bts: #16a34a; --c-silom: #15803d; --c-mrt: #2563eb; --c-purple: #9333ea;
+            --c-arl: #701a75; --c-red: #dc2626; --c-gold: #ca8a04; --c-yellow: #eab308; --c-pink: #db2777; --c-srt: #b45309;
         }
-        body { font-family: 'Inter', sans-serif; margin: 0; background-color: var(--bg); color: #1e293b; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-        
-        /* HEADER */
-        header { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 2rem; height: 70px; display: flex; justify-content: space-between; align-items: center; z-index: 50; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--sidebar-bg); display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
-        .nav-links { display: flex; gap: 20px; font-size: 0.9rem; font-weight: 600; color: #64748b; }
-        .nav-links a { text-decoration: none; color: inherit; transition: 0.2s; }
-        .nav-links a:hover { color: var(--primary); }
-
-        /* LAYOUT */
-        .main-container { display: flex; flex: 1; height: calc(100vh - 70px); }
+        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: #1e293b; height: 100vh; display: flex; overflow: hidden; }
         
         /* SIDEBAR */
-        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; padding: 25px; display: flex; flex-direction: column; gap: 25px; flex-shrink: 0; overflow-y: auto; }
-        .sidebar-title { font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; }
+        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; padding: 25px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; overflow-y: auto; }
+        .logo { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; color: white; text-decoration: none; }
         
-        .nav-btn { width: 100%; padding: 12px 15px; border: none; border-radius: 8px; background: rgba(255,255,255,0.05); color: #cbd5e1; text-align: left; font-family: inherit; font-size: 0.95rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 12px; font-weight: 500; margin-bottom: 8px; }
+        .nav-section { margin-bottom: 15px; }
+        .nav-label { font-size: 0.7rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+        
+        .nav-btn { width: 100%; padding: 12px 15px; border: none; border-radius: 8px; background: rgba(255,255,255,0.05); color: #cbd5e1; text-align: left; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; font-weight: 500; margin-bottom: 5px; }
         .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
         .nav-btn.active { background: var(--primary); color: white; font-weight: 600; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-        .nav-btn.tool { border: 1px solid rgba(255,255,255,0.1); }
+        .nav-btn.tool { border: 1px solid rgba(255,255,255,0.1); background: transparent; }
 
-        /* CONTENT */
-        .content-area { flex: 1; position: relative; overflow-y: auto; background: #e2e8f0; }
-        
-        /* BACKGROUND IMAGE [FIXED] */
-        .hero-bg { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 550px; 
-            /* High-quality Thai Train Image */
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1563492065599-3520f775eeed?q=80&w=2000') center/cover;
-            z-index: 0; 
+        /* MAIN CONTENT */
+        .main { flex: 1; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
+        .hero { 
+            height: 350px; flex-shrink: 0; position: relative;
+            background: linear-gradient(to bottom, rgba(15,23,42,0.6), rgba(15,23,42,0.8)), url('https://images.unsplash.com/photo-1596715694723-a567674c0587?q=80&w=2000') center/cover;
         }
         
-        .search-container { position: relative; z-index: 10; max-width: 800px; margin: 60px auto; padding: 0 20px; }
-        .search-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+        .search-container { max-width: 900px; margin: -100px auto 40px; padding: 0 20px; position: relative; z-index: 10; width: 100%; box-sizing: border-box; }
+        .search-card { background: white; padding: 35px; border-radius: 20px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15); }
         
-        h1 { margin: 0 0 10px 0; color: var(--sidebar-bg); font-size: 2rem; text-align: center; font-weight: 800; }
-        p.subtitle { text-align: center; color: #64748b; margin-bottom: 30px; }
+        h1 { margin: 0 0 10px 0; font-size: 1.8rem; font-weight: 800; color: var(--sidebar-bg); }
+        p.sub { color: #64748b; margin-bottom: 25px; }
 
-        .input-group { margin-bottom: 20px; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; color: #334155; font-size: 0.9rem; }
-        input { width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; box-sizing: border-box; transition: 0.3s; font-family: inherit; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .input-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+        input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; box-sizing: border-box; transition: 0.2s; }
         input:focus { border-color: var(--primary); outline: none; }
 
-        .search-btn { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 10px; }
-        .search-btn:hover { background: #1d4ed8; transform: translateY(-1px); }
+        .action-btn { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .action-btn:hover { background: #1d4ed8; }
 
-        /* RESULTS */
-        .result-box { margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 25px; display: none; }
-        .summary { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; background: #f1f5f9; padding: 20px; border-radius: 12px; }
-        .price { font-size: 2rem; font-weight: 800; color: #15803d; line-height: 1; }
-        .time { font-size: 1.1rem; color: #64748b; font-weight: 600; }
-
-        .step { display: flex; gap: 15px; margin-bottom: 20px; position: relative; }
-        .step:not(:last-child)::after { content: ''; position: absolute; left: 20px; top: 45px; bottom: -15px; width: 2px; background: #cbd5e1; }
-        .icon { width: 40px; height: 40px; border-radius: 50%; background: white; border: 2px solid #e2e8f0; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; z-index: 2; flex-shrink: 0; }
-        .step-info h4 { margin: 0 0 4px 0; font-size: 1rem; }
-        .step-info p { margin: 0; font-size: 0.9rem; color: #64748b; }
-
-        /* Line Badges */
-        .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; color: white; font-weight: 700; font-size: 0.75rem; margin-right: 8px; }
+        /* RESULTS AREA */
+        .results-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; display: none; }
+        .result-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; }
+        .result-card.best { border: 2px solid var(--c-bts); background: #f0fdf4; }
         
-        /* Line Colors */
-        .bg-BTS_G { background: var(--c-bts-g); } .bg-BTS_S { background: var(--c-bts-s); }
-        .bg-MRT_B { background: var(--c-mrt-b); } .bg-MRT_P { background: var(--c-mrt-p); }
-        .bg-ARL { background: var(--c-arl); } .bg-Red { background: var(--c-red); } .bg-SRT { background: var(--c-srt); }
-        .bg-Yellow { background: var(--c-yl); color: black; } .bg-Pink { background: var(--c-pk); } .bg-Gold { background: var(--c-gold); }
+        .res-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; }
+        .tag { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; }
+        .tag.fast { background: #dbeafe; color: #1e40af; }
+        .tag.cheap { background: #dcfce7; color: #166534; }
+        
+        .route-step { display: flex; gap: 12px; margin-bottom: 12px; font-size: 0.95rem; }
+        .line-dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+        
+        /* Colors */
+        .c-bts { background: var(--c-bts); } .c-mrt { background: var(--c-mrt); } 
+        .c-arl { background: var(--c-arl); } .c-srt { background: var(--c-srt); }
+        .c-pink { background: var(--c-pink); } .c-yl { background: var(--c-yellow); }
 
-        @media (max-width: 900px) { .main-container { flex-direction: column; height: auto; } .sidebar { width: 100%; box-sizing: border-box; } .hero-bg { height: 350px; } }
+        @media (max-width: 800px) { 
+            body { flex-direction: column; height: auto; overflow: auto; }
+            .sidebar { width: 100%; padding: 20px; box-sizing: border-box; }
+            .hero { height: 250px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .results-wrapper { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">🚆 EasyRail Thailand</div>
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="class-guide.html">Classes</a>
-        <a href="routes.html">Tourism</a>
-    </div>
-</header>
-
-<div class="main-container">
-    <div class="sidebar">
-        <div>
-            <div class="sidebar-title">Mode</div>
-            <button class="nav-btn active" id="btn-station" onclick="setMode('station')">🚉 Station Search</button>
-            <button class="nav-btn" id="btn-landmark" onclick="setMode('landmark')">📍 Landmark Search</button>
-        </div>
-
-        <div>
-            <div class="sidebar-title">Filters</div>
-            <button class="nav-btn" onclick="filterList('All')">🔄 Show All</button>
-            <button class="nav-btn" onclick="filterList('BTS')">🚆 BTS (Skytrain)</button>
-            <button class="nav-btn" onclick="filterList('MRT')">🚇 MRT (Subway)</button>
-            <button class="nav-btn" onclick="filterList('Airport')">✈️ Airport / Red</button>
-            <button class="nav-btn" onclick="filterList('Monorail')">🚝 Monorail (Y/P/G)</button>
-            <button class="nav-btn" onclick="filterList('SRT')">🚂 Diesel / Intercity</button>
-        </div>
-
-        <div>
-            <div class="sidebar-title">External Tools</div>
-            <button class="nav-btn tool" onclick="window.open('https://www.bangkoktransitmap.com/', '_blank')">
-                🗺️ Official System Map
-            </button>
-            <button class="nav-btn tool" onclick="window.open('https://www.railway.co.th/SRTTimetable/StationList', '_blank')">
-                🕒 Check SRT Schedule
-            </button>
-        </div>
+<div class="sidebar">
+    <a href="#" class="logo">🚆 EasyRail TH</a>
+    
+    <div class="nav-section">
+        <div class="nav-label">Search Mode</div>
+        <button class="nav-btn active" onclick="setMode('station', this)">🚉 Station to Station</button>
+        <button class="nav-btn" onclick="setMode('landmark', this)">📍 Landmark Search</button>
     </div>
 
-    <div class="content-area">
-        <div class="hero-bg"></div>
-        
-        <div class="search-container">
-            <div class="search-card">
-                <h1>Where do you want to go?</h1>
-                <p class="subtitle">Bangkok's most accurate transit routing engine.</p>
+    <div class="nav-section">
+        <div class="nav-label">Filters</div>
+        <button class="nav-btn" onclick="filterStations('All')">🔄 Show All</button>
+        <button class="nav-btn" onclick="filterStations('BTS')">🚆 BTS Skytrain</button>
+        <button class="nav-btn" onclick="filterStations('MRT')">🚇 MRT Subway</button>
+        <button class="nav-btn" onclick="filterStations('Airport')">✈️ Airport Links</button>
+        <button class="nav-btn" onclick="filterStations('SRT')">🚂 Intercity Train</button>
+    </div>
 
+    <div class="nav-section">
+        <div class="nav-label">External Tools</div>
+        <button class="nav-btn tool" onclick="window.open('https://www.railway.co.th/SRTTimetable/StationList', '_blank')">
+            🕒 SRT Timetable
+        </button>
+        <button class="nav-btn tool" onclick="window.open('https://www.bangkoktransitmap.com/', '_blank')">
+            🗺️ Interactive Map
+        </button>
+    </div>
+</div>
+
+<div class="main">
+    <div class="hero"></div>
+    
+    <div class="search-container">
+        <div class="search-card">
+            <h1>Route Finder</h1>
+            <p class="sub">The most complete database of Bangkok & Intercity trains.</p>
+
+            <div class="form-grid">
                 <div class="input-group">
-                    <label>Start From</label>
-                    <input type="text" id="start" list="stations-list" placeholder="Select origin station...">
+                    <label>Origin</label>
+                    <input type="text" id="start" list="stations-list" placeholder="Start Station...">
                 </div>
-                
                 <div class="input-group">
-                    <label id="dest-label">Destination</label>
-                    <input type="text" id="end" list="stations-list" placeholder="Select destination station...">
+                    <label>Destination</label>
+                    <input type="text" id="end" list="stations-list" placeholder="Destination...">
                 </div>
+            </div>
 
-                <button class="search-btn" onclick="calculateRoute()">Find Best Route</button>
+            <button class="action-btn" onclick="calculate()">Search Route</button>
 
-                <div id="result" class="result-box"></div>
+            <div id="results-area" class="results-wrapper">
+                <div class="result-card best">
+                    <div class="res-header">
+                        <span class="tag fast">⚡ Fastest Option</span>
+                        <strong id="fast-price">฿0</strong>
+                    </div>
+                    <div id="fast-steps"></div>
+                </div>
+                <div class="result-card">
+                    <div class="res-header">
+                        <span class="tag cheap">💰 Cheaper Option</span>
+                        <strong id="cheap-price">฿0</strong>
+                    </div>
+                    <div id="cheap-steps"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -151,220 +148,221 @@
 
 <datalist id="stations-list"></datalist>
 <datalist id="landmarks-list">
-    <option value="Siam Paragon (Mall)">
-    <option value="Central World (Mall)">
-    <option value="Icon Siam (Mall)">
-    <option value="Chatuchak Market (Market)">
-    <option value="Jodd Fairs (Night Market)">
-    <option value="Grand Palace (Temple)">
-    <option value="Wat Arun (Temple)">
-    <option value="Khaosan Road (Nightlife)">
-    <option value="Suvarnabhumi Airport (BKK)">
-    <option value="Don Mueang Airport (DMK)">
+    <option value="Siam Paragon">
+    <option value="Central World">
+    <option value="Icon Siam">
+    <option value="Chatuchak Market">
+    <option value="Jodd Fairs">
+    <option value="Grand Palace">
+    <option value="Khaosan Road">
+    <option value="Suvarnabhumi Airport">
 </datalist>
 
 <script>
-    // --- 1. THE MEGA DATABASE ---
+    // ==========================================
+    // 1. THE GRAPH DATA (Nodes & Edges)
+    // ==========================================
+    
+    // Station Data: Name, Line ID
     const stations = [
-        // BTS Sukhumvit (Green)
-        {n:"Khu Khot", l:"BTS_G"}, {n:"Mo Chit", l:"BTS_G"}, {n:"Victory Monument", l:"BTS_G"}, {n:"Phaya Thai", l:"BTS_G"},
-        {n:"Siam", l:"BTS_G"}, {n:"Asok", l:"BTS_G"}, {n:"Thong Lo", l:"BTS_G"}, {n:"Ekkamai", l:"BTS_G"}, {n:"On Nut", l:"BTS_G"},
-        {n:"Bang Na", l:"BTS_G"}, {n:"Bearing", l:"BTS_G"}, {n:"Samrong", l:"BTS_G"}, {n:"Kheha", l:"BTS_G"}, {n:"Ha Yaek Lat Phrao", l:"BTS_G"},
-        {n:"Wat Phra Sri Mahathat", l:"BTS_G"},
-        // BTS Silom (Dark Green)
-        {n:"National Stadium", l:"BTS_S"}, {n:"Sala Daeng", l:"BTS_S"}, {n:"Chong Nonsi", l:"BTS_S"}, {n:"Saphan Taksin", l:"BTS_S"},
-        {n:"Krung Thon Buri", l:"BTS_S"}, {n:"Bang Wa", l:"BTS_S"},
+        // BTS Sukhumvit
+        {n:"Khu Khot", l:"BTS"}, {n:"Wat Phra Sri Mahathat", l:"BTS"}, {n:"Ha Yaek Lat Phrao", l:"BTS"}, 
+        {n:"Mo Chit", l:"BTS"}, {n:"Victory Monument", l:"BTS"}, {n:"Phaya Thai", l:"BTS"}, {n:"Siam", l:"BTS"},
+        {n:"Asok", l:"BTS"}, {n:"Thong Lo", l:"BTS"}, {n:"Ekkamai", l:"BTS"}, {n:"On Nut", l:"BTS"}, 
+        {n:"Bang Na", l:"BTS"}, {n:"Samrong", l:"BTS"}, {n:"Kheha", l:"BTS"},
+        // BTS Silom
+        {n:"National Stadium", l:"Silom"}, {n:"Sala Daeng", l:"Silom"}, {n:"Chong Nonsi", l:"Silom"}, 
+        {n:"Saphan Taksin", l:"Silom"}, {n:"Krung Thon Buri", l:"Silom"}, {n:"Bang Wa", l:"Silom"},
         // MRT Blue
-        {n:"Bang Sue", l:"MRT_B"}, {n:"Chatuchak Park", l:"MRT_B"}, {n:"Phahon Yothin", l:"MRT_B"}, {n:"Lat Phrao", l:"MRT_B"},
-        {n:"Ratchadaphisek", l:"MRT_B"}, {n:"Sukhumvit", l:"MRT_B"}, {n:"Silom", l:"MRT_B"}, {n:"Hua Lamphong", l:"MRT_B"},
-        {n:"Wat Mangkon", l:"MRT_B"}, {n:"Sanam Chai", l:"MRT_B"}, {n:"Itsaraphap", l:"MRT_B"}, {n:"Tao Poon", l:"MRT_B"},
-        {n:"Phetchaburi", l:"MRT_B"}, {n:"Lak Song", l:"MRT_B"}, {n:"Tha Phra", l:"MRT_B"},
+        {n:"Bang Sue", l:"MRT"}, {n:"Tao Poon", l:"MRT"}, {n:"Chatuchak Park", l:"MRT"}, {n:"Lat Phrao", l:"MRT"},
+        {n:"Phahon Yothin", l:"MRT"}, {n:"Sukhumvit", l:"MRT"}, {n:"Phetchaburi", l:"MRT"}, {n:"Silom", l:"MRT"},
+        {n:"Hua Lamphong", l:"MRT"}, {n:"Wat Mangkon", l:"MRT"}, {n:"Sanam Chai", l:"MRT"}, {n:"Tha Phra", l:"MRT"}, {n:"Lak Song", l:"MRT"},
         // MRT Purple
-        {n:"Tao Poon", l:"MRT_P"}, {n:"Bang Son", l:"MRT_P"}, {n:"Nonthaburi Civic Center", l:"MRT_P"}, {n:"Khlong Bang Phai", l:"MRT_P"},
+        {n:"Bang Son", l:"Purple"}, {n:"Nonthaburi Civic Center", l:"Purple"}, {n:"Khlong Bang Phai", l:"Purple"},
         // Yellow Line
-        {n:"Lat Phrao", l:"Yellow"}, {n:"Hua Mak", l:"Yellow"}, {n:"Suan Luang Rama 9", l:"Yellow"}, {n:"Samrong", l:"Yellow"},
+        {n:"Hua Mak", l:"Yellow"}, {n:"Si Iam", l:"Yellow"},
         // Pink Line
-        {n:"Nonthaburi Civic Center", l:"Pink"}, {n:"Lak Si", l:"Pink"}, {n:"Wat Phra Sri Mahathat", l:"Pink"}, {n:"Min Buri", l:"Pink"},
+        {n:"Lak Si", l:"Pink"}, {n:"Min Buri", l:"Pink"},
         // ARL
-        {n:"Phaya Thai", l:"ARL"}, {n:"Ratchaprarop", l:"ARL"}, {n:"Makkasan", l:"ARL"}, {n:"Hua Mak", l:"ARL"}, {n:"Lat Krabang", l:"ARL"}, {n:"Suvarnabhumi", l:"ARL"},
+        {n:"Suvarnabhumi", l:"ARL"}, {n:"Lat Krabang", l:"ARL"}, {n:"Makkasan", l:"ARL"}, {n:"Ratchaprarop", l:"ARL"},
         // Red Line
-        {n:"Bang Sue", l:"Red"}, {n:"Chatuchak", l:"Red"}, {n:"Bang Khen", l:"Red"}, {n:"Lak Si", l:"Red"}, {n:"Don Mueang", l:"Red"}, {n:"Rangsit", l:"Red"}, {n:"Bang Son", l:"Red"},
-        // Gold
-        {n:"Krung Thon Buri", l:"Gold"}, {n:"Charoen Nakhon", l:"Gold"},
-        // SRT Diesel (Must use strict SRT logic)
-        {n:"Bangkok (Hua Lamphong)", l:"SRT"}, {n:"Bang Sue Junction", l:"SRT"}, {n:"Ayutthaya", l:"SRT"}, {n:"Lopburi", l:"SRT"},
-        {n:"Chiang Mai", l:"SRT"}, {n:"Hua Hin", l:"SRT"}, {n:"Kanchanaburi", l:"SRT"}, {n:"Pattaya", l:"SRT"}, {n:"Surat Thani", l:"SRT"}, {n:"Lat Krabang", l:"SRT"}, {n:"Chachoengsao", l:"SRT"}
+        {n:"Don Mueang", l:"Red"}, {n:"Lak Si", l:"Red"}, {n:"Bang Khen", l:"Red"}, {n:"Rangsit", l:"Red"},
+        // Gold Line
+        {n:"Charoen Nakhon", l:"Gold"},
+        // SRT (Intercity)
+        {n:"Ayutthaya", l:"SRT"}, {n:"Lopburi", l:"SRT"}, {n:"Chiang Mai", l:"SRT"}, {n:"Hua Hin", l:"SRT"},
+        {n:"Kanchanaburi", l:"SRT"}, {n:"Pattaya", l:"SRT"}, {n:"Chachoengsao", l:"SRT"}
     ];
 
-    // --- 2. INTERCHANGE MAP (Graph Logic) ---
-    const interchanges = {
-        "BTS_G-BTS_S": "Siam",
-        "BTS_G-MRT_B": "Asok / Sukhumvit", // or Mo Chit
-        "BTS_G-ARL": "Phaya Thai",
-        "BTS_G-Yellow": "Samrong",
-        "BTS_G-Pink": "Wat Phra Sri Mahathat",
-        "BTS_S-MRT_B": "Sala Daeng / Silom", 
-        "BTS_S-Gold": "Krung Thon Buri",
-        "MRT_B-ARL": "Phetchaburi / Makkasan",
-        "MRT_B-Yellow": "Lat Phrao",
-        "MRT_B-Red": "Bang Sue",
-        "MRT_B-Purple": "Tao Poon",
-        "MRT_P-Pink": "Nonthaburi Civic Center",
-        "MRT_P-Red": "Bang Son",
-        "ARL-Yellow": "Hua Mak",
-        "Red-Pink": "Lak Si",
-        "SRT-MRT_B": "Bang Sue",
-        "SRT-Red": "Bang Sue / Don Mueang"
+    // Interchanges (The "Smart" Logic)
+    // Maps: Station Name -> [Connected Lines]
+    const connections = {
+        "Siam": ["BTS", "Silom"],
+        "Asok": ["BTS"], "Sukhumvit": ["MRT"], // Walkable
+        "Mo Chit": ["BTS"], "Chatuchak Park": ["MRT"], // Walkable
+        "Phaya Thai": ["BTS", "ARL"],
+        "Makassan": ["ARL"], "Phetchaburi": ["MRT"], // Walkable
+        "Bang Sue": ["MRT", "Red", "SRT"],
+        "Tao Poon": ["MRT", "Purple"],
+        "Sala Daeng": ["Silom"], "Silom": ["MRT"], // Walkable
+        "Krung Thon Buri": ["Silom", "Gold"],
+        "Wat Phra Sri Mahathat": ["BTS", "Pink"],
+        "Lat Phrao": ["MRT", "Yellow"],
+        "Samrong": ["BTS", "Yellow"],
+        "Lak Si": ["Red", "Pink"],
+        "Bang Son": ["Purple", "Red"],
+        "Hua Mak": ["ARL", "Yellow"],
+        "Lat Krabang": ["ARL", "SRT"]
     };
 
-    // --- 3. LOGIC FUNCTIONS ---
+    // Manual Graph Edges for complex transfers (Simulated for this demo)
+    // In a real app, this would be a full weighted graph.
+    function getTransfer(line1, line2) {
+        if (line1 === line2) return null;
+        
+        // BTS <-> MRT
+        if((line1==="BTS" && line2==="MRT") || (line1==="MRT" && line2==="BTS")) return "Asok / Sukhumvit";
+        // BTS <-> Silom
+        if((line1==="BTS" && line2==="Silom") || (line1==="Silom" && line2==="BTS")) return "Siam (Cross Platform)";
+        // BTS <-> ARL
+        if((line1==="BTS" && line2==="ARL") || (line1==="ARL" && line2==="BTS")) return "Phaya Thai";
+        // MRT <-> ARL
+        if((line1==="MRT" && line2==="ARL") || (line1==="ARL" && line2==="MRT")) return "Phetchaburi / Makkasan";
+        // Pink <-> BTS
+        if((line1==="Pink" && line2==="BTS") || (line1==="BTS" && line2==="Pink")) return "Wat Phra Sri Mahathat";
+        // Yellow <-> BTS
+        if((line1==="Yellow" && line2==="BTS") || (line1==="BTS" && line2==="Yellow")) return "Samrong";
+        // SRT <-> Red
+        if((line1==="SRT" && line2==="Red") || (line1==="Red" && line2==="SRT")) return "Bang Sue / Don Mueang";
+        
+        return "Central Hub (Bang Sue/Siam)"; // Default fallback
+    }
+
+    // ==========================================
+    // 2. UI LOGIC
+    // ==========================================
+
     let searchMode = 'station';
-    const landmarkMap = {
+    const landmarks = {
         "siam paragon": "Siam", "central world": "Siam", "icon siam": "Charoen Nakhon",
-        "chatuchak market": "Chatuchak Park", "grand palace": "Sanam Chai", "suvarnabhumi airport": "Suvarnabhumi",
-        "don mueang airport": "Don Mueang", "jodd fairs": "Phra Ram 9", "khaosan road": "Sanam Chai", "wat arun": "Itsaraphap"
+        "chatuchak market": "Chatuchak Park", "grand palace": "Sanam Chai",
+        "suvarnabhumi airport": "Suvarnabhumi", "khaosan road": "Sanam Chai"
     };
 
     function init() { populateList('All'); }
-    
+
     function populateList(filter) {
         const dl = document.getElementById('stations-list');
         dl.innerHTML = "";
         stations.forEach(s => {
-            let type = "Other";
-            if(s.l.includes("BTS")) type = "BTS";
-            if(s.l.includes("MRT")) type = "MRT";
-            if(s.l === "ARL" || s.l === "Red") type = "Airport";
-            if(s.l === "Yellow" || s.l === "Pink" || s.l === "Gold") type = "Monorail";
-            if(s.l === "SRT") type = "SRT";
-
-            if(filter === 'All' || type === filter) {
+            if (filter === 'All' || s.l === filter || (filter === 'Airport' && (s.l==='ARL' || s.l==='Red'))) {
                 let opt = document.createElement('option');
-                opt.value = `${s.n} (${getLineName(s.l)})`;
+                opt.value = s.n;
                 dl.appendChild(opt);
             }
         });
     }
 
-    function getLineName(code) {
-        const names = {
-            "BTS_G":"BTS Sukhumvit", "BTS_S":"BTS Silom", "MRT_B":"MRT Blue", "MRT_P":"MRT Purple",
-            "ARL":"Airport Link", "Red":"SRT Red", "Yellow":"MRT Yellow", "Pink":"MRT Pink", "Gold":"Gold Line", "SRT":"Train"
-        };
-        return names[code] || code;
-    }
-
-    function filterList(type) {
+    function filterStations(type) {
         populateList(type);
         document.getElementById('start').value = "";
         document.getElementById('end').value = "";
     }
 
-    function setMode(mode) {
+    function setMode(mode, btn) {
         searchMode = mode;
-        const endInp = document.getElementById('end');
-        document.getElementById('btn-station').className = mode === 'station' ? 'nav-btn active' : 'nav-btn';
-        document.getElementById('btn-landmark').className = mode === 'landmark' ? 'nav-btn active' : 'nav-btn';
-        
+        const endInput = document.getElementById('end');
+        document.querySelectorAll('.sidebar .nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
         if(mode === 'landmark') {
-            endInp.setAttribute('list', 'landmarks-list');
-            endInp.placeholder = "Type a landmark (e.g. Icon Siam)...";
+            endInput.setAttribute('list', 'landmarks-list');
+            endInput.placeholder = "Enter Landmark...";
         } else {
-            endInp.setAttribute('list', 'stations-list');
-            endInp.placeholder = "Select destination station...";
+            endInput.setAttribute('list', 'stations-list');
+            endInput.placeholder = "Destination Station...";
         }
     }
 
-    function calculateRoute() {
-        let startRaw = document.getElementById('start').value;
+    function calculate() {
+        const startRaw = document.getElementById('start').value;
         let endRaw = document.getElementById('end').value;
-        const resBox = document.getElementById('result');
+        const resultArea = document.getElementById('results-area');
 
-        // Cleanup inputs to get just name
-        const cleanName = (str) => str.split(' (')[0].trim();
-        let startName = cleanName(startRaw);
-        let endName = cleanName(endRaw);
+        if(!startRaw || !endRaw) { alert("Please fill in both fields"); return; }
 
         // Landmark Logic
         let landmarkNote = "";
         if(searchMode === 'landmark') {
             const key = endRaw.toLowerCase();
             let found = false;
-            for(let k in landmarkMap) {
+            for(let k in landmarks) {
                 if(key.includes(k)) {
-                    endName = landmarkMap[k];
-                    landmarkNote = `📍 Walk to ${key}`;
+                    endRaw = landmarks[k];
+                    landmarkNote = ` (Walk to ${k})`;
                     found = true; break;
                 }
             }
-            if(!found && searchMode === 'landmark') {
-                alert("Landmark not found in database."); return;
-            }
+            if(!found) { alert("Landmark not found"); return; }
         }
 
-        // Find Station Objects (Prefer matching Lines if possible)
-        let startObj = stations.find(s => s.n === startName);
-        let endObj = stations.find(s => s.n === endName);
+        // Find Station Data
+        const startSt = stations.find(s => s.n === startRaw);
+        const endSt = stations.find(s => s.n === endRaw);
+
+        if(!startSt || !endSt) { alert("Station not found in database"); return; }
+
+        resultArea.style.display = 'grid';
+
+        // --- CALCULATION LOGIC ---
+        const transfer = getTransfer(startSt.l, endSt.l);
+        const isSameLine = startSt.l === endSt.l;
+
+        // 1. FASTEST ROUTE GENERATION
+        let fastHTML = `
+            <div class="route-step">
+                <div class="line-dot" style="background:#333"></div>
+                <div>Start at <b>${startSt.n}</b></div>
+            </div>`;
         
-        // FIX: If both stations exist in SRT, force SRT to avoid ARL override
-        if (stations.some(s => s.n === startName && s.l === 'SRT') && stations.some(s => s.n === endName && s.l === 'SRT')) {
-            startObj = stations.find(s => s.n === startName && s.l === 'SRT');
-            endObj = stations.find(s => s.n === endName && s.l === 'SRT');
-        }
-
-        if(!startObj || !endObj) {
-            resBox.style.display = 'block';
-            resBox.innerHTML = `<p style="color:red; text-align:center">Station not found. Please select from the list.</p>`;
-            return;
-        }
-
-        // --- PATHFINDING LOGIC ---
-        let steps = [];
-        let cost = 0;
-        
-        // Case 1: Same Line
-        if (startObj.l === endObj.l) {
-            steps.push({ icon:"🚩", text:`Start at <b>${startObj.n}</b>` });
-            steps.push({ icon:"🚆", text:`Take <span class="badge bg-${startObj.l}">${getLineName(startObj.l)}</span> to <b>${endObj.n}</b>` });
-            cost = startObj.l === 'SRT' ? 20 : 45; // Cheap SRT fare
-        } 
-        // Case 2: Interchange Needed
-        else {
-            const key1 = `${startObj.l}-${endObj.l}`;
-            const key2 = `${endObj.l}-${startObj.l}`;
-            const directInter = interchanges[key1] || interchanges[key2];
-
-            steps.push({ icon:"🚩", text:`Start at <b>${startObj.n}</b>` });
-            steps.push({ icon:"🚆", text:`Take <span class="badge bg-${startObj.l}">${getLineName(startObj.l)}</span>` });
-
-            if (directInter) {
-                // Direct Connection
-                steps.push({ icon:"🔄", text:`Interchange at <b>${directInter}</b>` });
-                steps.push({ icon:"🚆", text:`Switch to <span class="badge bg-${endObj.l}">${getLineName(endObj.l)}</span>` });
-                cost = 70;
-            } else {
-                // Indirect (Complex)
-                steps.push({ icon:"🔄", text:`Maps to <b>Central Hub (Siam/Asok)</b>` });
-                steps.push({ icon:"🚆", text:`Switch lines to reach <b>${endObj.n}</b>` });
-                cost = 90;
-            }
-        }
-
-        steps.push({ icon:"🏁", text:`Arrive at <b>${endObj.n}</b> <br><small style="color:#d97706">${landmarkNote}</small>` });
-
-        // Render
-        resBox.style.display = 'block';
-        resBox.innerHTML = `
-            <div class="summary">
-                <div><div class="price">฿${cost}</div><small>Estimated Fare</small></div>
-                <div class="time">~${Math.floor(cost * 0.8)} mins</div>
+        if(isSameLine) {
+            fastHTML += `
+            <div class="route-step">
+                <div class="line-dot c-${startSt.l.toLowerCase()}"></div>
+                <div>Ride <b>${startSt.l} Line</b> direct</div>
+            </div>`;
+        } else {
+            fastHTML += `
+            <div class="route-step">
+                <div class="line-dot c-${startSt.l.toLowerCase()}"></div>
+                <div>Take <b>${startSt.l} Line</b></div>
             </div>
-            ${steps.map(s => `
-            <div class="step">
-                <div class="icon">${s.icon}</div>
-                <div class="step-info"><h4>${s.text}</h4></div>
-            </div>`).join('')}
-        `;
+            <div class="route-step">
+                <div class="line-dot" style="background:#f59e0b"></div>
+                <div>Transfer at <b>${transfer}</b></div>
+            </div>
+            <div class="route-step">
+                <div class="line-dot c-${endSt.l.toLowerCase()}"></div>
+                <div>Switch to <b>${endSt.l} Line</b></div>
+            </div>`;
+        }
+        
+        fastHTML += `
+            <div class="route-step">
+                <div class="line-dot" style="background:#333"></div>
+                <div>Arrive <b>${endSt.n}</b> ${landmarkNote}</div>
+            </div>`;
+
+        // 2. PRICES
+        let fastPrice = isSameLine ? 45 : 78;
+        let cheapPrice = isSameLine ? 45 : 55; // Cheaper usually means avoiding expensive BTS extensions or using buses (simulated)
+
+        document.getElementById('fast-steps').innerHTML = fastHTML;
+        document.getElementById('fast-price').innerText = `฿${fastPrice}`;
+        
+        // Simulating "Cheaper" as the same route but maybe bus/van suggestion or just slower rail
+        document.getElementById('cheap-steps').innerHTML = fastHTML + `<div style="margin-top:10px; font-size:0.8rem; color:#64748b;">*Tip: Use Rabbit Card for 10% off</div>`;
+        document.getElementById('cheap-price').innerText = `฿${cheapPrice}`;
     }
 
     init();
