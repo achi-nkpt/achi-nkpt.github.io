@@ -8,96 +8,59 @@
     <style>
         :root { 
             --sidebar-bg: #0f172a; --primary: #2563eb; --accent: #f59e0b; --bg: #f1f5f9;
-            /* Official Line Colors */
             --c-bts-g: #16a34a; --c-bts-s: #15803d; --c-mrt-b: #1d4ed8; --c-mrt-p: #7e22ce; 
             --c-arl: #701a75; --c-red: #b91c1c; --c-gold: #ca8a04; --c-yl: #eab308; --c-pk: #db2777; --c-srt: #854d0e;
         }
-        
-        /* Base Desktop Layout */
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: #1e293b; height: 100vh; display: flex; overflow: hidden; }
         
-        /* SIDEBAR */
-        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; padding: 25px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; overflow-y: auto; z-index: 20; }
+        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; padding: 25px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; overflow-y: auto; }
         .logo { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: white; text-decoration: none; }
-        
         .nav-section { margin-bottom: 15px; }
         .nav-label { font-size: 0.7rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
-        
         .nav-btn { width: 100%; padding: 12px 15px; border: none; border-radius: 8px; background: rgba(255,255,255,0.05); color: #cbd5e1; text-align: left; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; font-weight: 500; margin-bottom: 5px; }
         .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
         .nav-btn.active { background: var(--primary); color: white; font-weight: 600; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); border: 1px solid rgba(255,255,255,0.2); }
         .nav-btn.link { border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94a3b8; }
         .nav-btn.link:hover { border-color: white; color: white; }
 
-        /* MAIN CONTENT */
         .main { flex: 1; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
-        
-        .hero { 
-            height: 350px; flex-shrink: 0; position: relative;
-            background: linear-gradient(to bottom, rgba(15,23,42,0.5), rgba(15,23,42,0.8)), 
-            url('https://internationalliving.com/_next/image/?url=https%3A%2F%2Fimages.ctfassets.net%2Fwv75stsetqy3%2FDaKdXY2tkQGWeVQiCbSx7%2Fac01166282697e4e0cafb99180d35cd1%2FThailand_Featured.jpg%3Fq%3D60%26fit%3Dfill%26fm%3Dwebp&w=1920&q=60') center/cover;
-        }
-        
+        .hero { height: 350px; flex-shrink: 0; position: relative; background: linear-gradient(to bottom, rgba(15,23,42,0.5), rgba(15,23,42,0.8)), url('https://internationalliving.com/_next/image/?url=https%3A%2F%2Fimages.ctfassets.net%2Fwv75stsetqy3%2FDaKdXY2tkQGWeVQiCbSx7%2Fac01166282697e4e0cafb99180d35cd1%2FThailand_Featured.jpg%3Fq%3D60%26fit%3Dfill%26fm%3Dwebp&w=1920&q=60') center/cover; }
         .search-container { max-width: 800px; margin: -100px auto 40px; padding: 0 20px; position: relative; z-index: 10; width: 100%; box-sizing: border-box; }
         .search-card { background: white; padding: 35px; border-radius: 20px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15); }
-        
         h1 { margin: 0 0 10px 0; font-size: 1.8rem; font-weight: 800; color: var(--sidebar-bg); }
         p.sub { color: #64748b; margin-bottom: 25px; }
-
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
         .input-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
         input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; box-sizing: border-box; transition: 0.2s; }
         input:focus { border-color: var(--primary); outline: none; }
-
         .action-btn { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
         .action-btn:hover { background: #1d4ed8; }
-
-        /* RESULTS AREA */
         .results-wrapper { margin-top: 30px; display: none; }
         .result-card { background: #f0fdf4; border: 2px solid #16a34a; border-radius: 12px; padding: 25px; width: 100%; box-sizing: border-box; }
-        
         .res-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #dcfce7; padding-bottom: 15px; }
         .tag { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; padding: 6px 12px; border-radius: 6px; background: #166534; color: white; }
         .price { font-size: 2.2rem; font-weight: 800; color: #15803d; }
-        
         .route-step { display: flex; gap: 15px; margin-bottom: 18px; font-size: 1rem; align-items: flex-start; }
         .icon { font-size: 1.2rem; min-width: 30px; text-align: center; }
         .line-dot { width: 14px; height: 14px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
         .step-info h4 { margin: 0; font-weight: 700; font-size: 1.05rem; }
         .step-info p { margin: 4px 0 0; color: #64748b; font-size: 0.9rem; }
-
         .disclaimer { margin-top: 20px; text-align: center; color: #94a3b8; font-size: 0.8rem; font-style: italic; }
-        
-        /* Line Colors */
-        .bg-BTS_G { background: var(--c-bts-g); } .bg-BTS_S { background: var(--c-bts-s); }
-        .bg-MRT_B { background: var(--c-mrt-b); } .bg-MRT_P { background: var(--c-mrt-p); }
-        .bg-ARL { background: var(--c-arl); } .bg-Red { background: var(--c-red); } .bg-SRT { background: var(--c-srt); }
-        .bg-Yellow { background: var(--c-yl); } .bg-Pink { background: var(--c-pk); } .bg-Gold { background: var(--c-gold); }
-
-        /* --- MOBILE RESPONSIVE FIXES --- */
-        @media (max-width: 900px) { 
-            body { flex-direction: column; overflow: auto; height: auto; } /* Enable scrolling */
-            .sidebar { width: 100%; height: auto; padding: 20px; box-sizing: border-box; } /* Stack sidebar on top */
-            .main { overflow: visible; }
-            .hero { height: 250px; } 
-            .search-container { margin-top: -80px; }
-            .form-grid { grid-template-columns: 1fr; } 
-        }
+        .bg-BTS_G { background: var(--c-bts-g); } .bg-BTS_S { background: var(--c-bts-s); } .bg-MRT_B { background: var(--c-mrt-b); } .bg-MRT_P { background: var(--c-mrt-p); }
+        .bg-ARL { background: var(--c-arl); } .bg-Red { background: var(--c-red); } .bg-SRT { background: var(--c-srt); } .bg-Yellow { background: var(--c-yl); } .bg-Pink { background: var(--c-pk); } .bg-Gold { background: var(--c-gold); }
+        @media (max-width: 900px) { body { flex-direction: column; overflow: auto; height: auto; } .sidebar { width: 100%; height: auto; padding: 20px; box-sizing: border-box; } .main { overflow: visible; } .hero { height: 250px; } .search-container { margin-top: -80px; } .form-grid { grid-template-columns: 1fr; } }
     </style>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1332950063229500"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1332950063229500" crossorigin="anonymous"></script>
 </head>
 <body>
 
 <div class="sidebar">
     <a href="#" class="logo">🚆 EasyRail TH</a>
-    
     <div class="nav-section">
         <div class="nav-label">Search Mode</div>
         <button id="btn-station" class="nav-btn active" onclick="setMode('station', this)">🚉 Station Search</button>
         <button id="btn-landmark" class="nav-btn" onclick="setMode('landmark', this)">📍 Landmark Search</button>
     </div>
-
     <div class="nav-section" id="filter-group">
         <div class="nav-label">Filter Lines</div>
         <button class="nav-btn active" onclick="filterStations('All', this)">🔄 Show All</button>
@@ -107,20 +70,12 @@
         <button class="nav-btn" onclick="filterStations('Monorail', this)">🚝 Monorail (Y/P/G)</button>
         <button class="nav-btn" onclick="filterStations('SRT', this)">🚂 Diesel / Intercity</button>
     </div>
-
     <div class="nav-section">
         <div class="nav-label">Booking & Official</div>
-        <button class="nav-btn link" onclick="window.open('https://dticket.railway.co.th/DTicketPublicWeb/home/Home', '_blank')">
-            🎫 Book SRT Tickets
-        </button>
-        <button class="nav-btn link" onclick="window.open('https://www.bts.co.th/index.html', '_blank')">
-            🚆 BTS Official Site
-        </button>
-        <button class="nav-btn link" onclick="window.open('https://metro.bemplc.co.th/Fare-Calculation', '_blank')">
-            🚇 MRT Official Site
-        </button>
+        <button class="nav-btn link" onclick="window.open('https://dticket.railway.co.th/DTicketPublicWeb/home/Home', '_blank')">🎫 Book SRT Tickets</button>
+        <button class="nav-btn link" onclick="window.open('https://www.bts.co.th/index.html', '_blank')">🚆 BTS Official Site</button>
+        <button class="nav-btn link" onclick="window.open('https://metro.bemplc.co.th/Fare-Calculation', '_blank')">🚇 MRT Official Site</button>
     </div>
-
     <div class="nav-section">
         <div class="nav-label">Tools</div>
         <button class="nav-btn link" onclick="window.open('https://www.railway.co.th/SRTTimetable/StationList', '_blank')">
@@ -134,26 +89,21 @@
 
 <div class="main">
     <div class="hero"></div>
-    
     <div class="search-container">
         <div class="search-card">
             <h1>Route Finder</h1>
             <p class="sub">Bangkok's most accurate transit routing engine.</p>
-
             <div class="form-grid">
                 <div class="input-group">
                     <label>Start From</label>
                     <input type="text" id="start" list="stations-list" placeholder="Select origin station...">
                 </div>
-                
                 <div class="input-group">
                     <label id="dest-label">Destination</label>
                     <input type="text" id="end" list="stations-list" placeholder="Select destination station...">
                 </div>
             </div>
-
             <button class="action-btn" onclick="calculateRoute()">Find Best Route</button>
-
             <div id="results-area" class="results-wrapper">
                 <div class="result-card best">
                     <div class="res-header">
@@ -166,7 +116,6 @@
                     <div id="res-steps"></div>
                 </div>
             </div>
-
             <div class="disclaimer">EasyRail Thailand can make mistakes, please check twice.</div>
         </div>
     </div>
@@ -178,18 +127,39 @@
     <option value="Central World (Mall)">
     <option value="Icon Siam (Mall)">
     <option value="Chatuchak Market (Market)">
-    <option value="Jodd Fairs (Night Market)">
     <option value="Grand Palace (Temple)">
     <option value="Wat Arun (Temple)">
     <option value="Khaosan Road (Nightlife)">
     <option value="Suvarnabhumi Airport (BKK)">
     <option value="Don Mueang Airport (DMK)">
+    <option value="Doi Suthep (Chiang Mai)">
+    <option value="Walking Street (Pattaya)">
+    <option value="Hua Hin Beach">
+    <option value="Bridge Over the River Kwai (Kanchanaburi)">
 </datalist>
 
 <script>
     // ==========================================
-    // 1. ORDERED STATION DATABASE
+    // 1. FARE TABLES (Nov 2025)
     // ==========================================
+    // Index 2 = 25 Baht confirmed for BTS
+    const FARE_TABLES = {
+        "BTS_G": [0, 17, 25, 28, 32, 35, 40, 43, 47, 52, 57, 62, 65, 65, 65, 65, 65],
+        "BTS_S": [0, 17, 25, 28, 32, 35, 40, 43, 47, 52, 57, 62],
+        "MRT_B": [0, 17, 20, 22, 25, 27, 30, 32, 35, 38, 40, 42, 45, 45, 45],
+        "MRT_P": [0, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 42],
+        "Red":   [0, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42],
+        "ARL":   [0, 15, 20, 25, 30, 35, 40, 45],
+        "Yellow":[0, 15, 19, 23, 27, 31, 35, 39, 43, 45],
+        "Pink":  [0, 15, 19, 23, 27, 31, 35, 39, 43, 45],
+        "Gold":  [16], 
+        "SRT": {
+            "Lat Krabang": 6, "Phaya Thai": 2, "Makkasan": 2, "Hua Lamphong": 2,
+            "Ayutthaya": 15, "Lopburi": 28, "Pattaya": 31, "Hua Hin": 44,
+            "Chiang Mai": 231, "Hat Yai": 339, "Nong Khai": 253, "Kanchanaburi": 100
+        }
+    };
+
     const lineData = {
         "BTS_G": ["Khu Khot", "Yaek Kor Por Aor", "Royal Thai Air Force Museum", "Bhumibol Adulyadej Hospital", "Saphan Mai", "Sai Yud", "Phahon Yothin 59", "Wat Phra Sri Mahathat", "11th Infantry Regiment", "Bang Bua", "Royal Forest Department", "Kasetsart University", "Sena Nikhom", "Ratchayothin", "Phahon Yothin 24", "Ha Yaek Lat Phrao", "Mo Chit", "Saphan Khwai", "Ari", "Sanam Pao", "Victory Monument", "Phaya Thai", "Ratchathewi", "Siam", "Chit Lom", "Phloen Chit", "Nana", "Asok", "Phrom Phong", "Thong Lo", "Ekkamai", "Phra Khanong", "On Nut", "Bang Chak", "Punnawithi", "Udom Suk", "Bang Na", "Bearing", "Samrong", "Pu Chao", "Chang Erawan", "Royal Thai Naval Academy", "Pak Nam", "Srinagarindra", "Phraek Sa", "Sai Luat", "Kheha"],
         "BTS_S": ["National Stadium", "Siam", "Ratchadamri", "Sala Daeng", "Chong Nonsi", "Saint Louis", "Surasak", "Saphan Taksin", "Krung Thon Buri", "Wongwian Yai", "Pho Nimit", "Talat Phlu", "Wutthakat", "Bang Wa"],
@@ -210,53 +180,28 @@
         });
     }
 
-    // --- 2. INTERCHANGE MAP ---
+    const graph = {
+        "BTS_G": ["BTS_S", "MRT_B", "ARL", "Pink", "Yellow", "SRT"], "BTS_S": ["BTS_G", "MRT_B", "Gold"],
+        "MRT_B": ["BTS_G", "BTS_S", "ARL", "Yellow", "Red", "Purple", "SRT"], "MRT_P": ["MRT_B", "Pink", "Red"],
+        "ARL":   ["BTS_G", "MRT_B", "Yellow", "SRT"], "Red":   ["MRT_B", "MRT_P", "Pink", "SRT"],
+        "Pink":  ["MRT_P", "Red", "BTS_G"], "Yellow":["MRT_B", "BTS_G", "ARL"],
+        "Gold":  ["BTS_S"], "SRT":   ["MRT_B", "Red", "ARL", "BTS_G"] 
+    };
+
     function getInterchange(l1, l2) {
         const pair = [l1, l2].sort().join("-");
         const map = {
-            "ARL-BTS_G": "Phaya Thai", 
-            "ARL-MRT_B": "Makkasan / Phetchaburi", 
-            "ARL-SRT": "Lat Krabang", 
-            "ARL-Yellow": "Hua Mak",
-            "BTS_G-BTS_S": "Siam", 
-            "BTS_G-MRT_B": "Asok / Sukhumvit",
-            "BTS_G-Pink": "Wat Phra Sri Mahathat", 
-            "BTS_G-Yellow": "Samrong",
-            "BTS_G-SRT": "Phaya Thai",
-            "BTS_S-Gold": "Krung Thon Buri", 
-            "BTS_S-MRT_B": "Sala Daeng / Silom",
-            "MRT_B-MRT_P": "Tao Poon", 
-            "MRT_B-Red": "Bang Sue", 
-            "MRT_B-SRT": "Bang Sue Junction", 
-            "MRT_B-Yellow": "Lat Phrao",
-            "MRT_P-Pink": "Nonthaburi Civic Center", 
-            "MRT_P-Red": "Bang Son",
-            "Pink-Red": "Lak Si", 
-            "Red-SRT": "Don Mueang / Bang Sue"
+            "ARL-BTS_G": "Phaya Thai", "ARL-MRT_B": "Makkasan / Phetchaburi", "ARL-SRT": "Lat Krabang",
+            "BTS_G-BTS_S": "Siam", "BTS_G-MRT_B": "Asok / Sukhumvit", "BTS_G-SRT": "Phaya Thai",
+            "BTS_S-MRT_B": "Sala Daeng / Silom", "MRT_B-Red": "Bang Sue"
         };
         return map[pair] || "Central Hub";
     }
 
-    // --- 3. GRAPH ADJACENCY LIST ---
-    const graph = {
-        "BTS_G": ["BTS_S", "MRT_B", "ARL", "Pink", "Yellow", "SRT"],
-        "BTS_S": ["BTS_G", "MRT_B", "Gold"],
-        "MRT_B": ["BTS_G", "BTS_S", "ARL", "Yellow", "Red", "Purple", "SRT"],
-        "MRT_P": ["MRT_B", "Pink", "Red"],
-        "ARL":   ["BTS_G", "MRT_B", "Yellow", "SRT"],
-        "Red":   ["MRT_B", "MRT_P", "Pink", "SRT"],
-        "Pink":  ["MRT_P", "Red", "BTS_G"],
-        "Yellow":["MRT_B", "BTS_G", "ARL"],
-        "Gold":  ["BTS_S"],
-        "SRT":   ["MRT_B", "Red", "ARL", "BTS_G"] 
-    };
-
-    // --- 4. UI LOGIC ---
     let searchMode = 'station';
-    const landmarkMap = {
-        "siam paragon": "Siam", "central world": "Siam", "icon siam": "Charoen Nakhon", "chatuchak market": "Chatuchak Park", 
-        "grand palace": "Sanam Chai", "suvarnabhumi airport": "Suvarnabhumi", "don mueang airport": "Don Mueang", 
-        "jodd fairs": "Phra Ram 9", "khaosan road": "Sanam Chai", "wat arun": "Itsaraphap"
+    const landmarkMap = { 
+        "siam paragon": "Siam", "central world": "Siam", "icon siam": "Charoen Nakhon", "chatuchak market": "Chatuchak Park", "grand palace": "Sanam Chai", "suvarnabhumi airport": "Suvarnabhumi", "don mueang airport": "Don Mueang", "jodd fairs": "Phra Ram 9", "khaosan road": "Sanam Chai", "yaowarat": "Wat Mangkon", "chinatown": "Wat Mangkon", "jim thompson": "National Stadium", "asiatique": "Saphan Taksin", "mahanakhon": "Chong Nonsi",
+        "doi suthep": "Chiang Mai", "nimman": "Chiang Mai", "ayutthaya historical": "Ayutthaya", "walking street": "Pattaya", "pattaya beach": "Pattaya", "sanctuary of truth": "Pattaya", "hua hin beach": "Hua Hin", "cicada": "Hua Hin", "river kwai": "Kanchanaburi"
     };
 
     function init() { populateList('All'); }
@@ -266,12 +211,10 @@
         dl.innerHTML = "";
         stations.forEach(s => {
             let type = "Other";
-            if(s.l.includes("BTS")) type = "BTS";
-            if(s.l.includes("MRT")) type = "MRT";
+            if(s.l.includes("BTS")) type = "BTS"; if(s.l.includes("MRT")) type = "MRT";
             if(s.l === "ARL" || s.l === "Red") type = "Airport";
             if(s.l === "Yellow" || s.l === "Pink" || s.l === "Gold") type = "Monorail";
             if(s.l === "SRT") type = "SRT";
-
             if(filter === 'All' || type === filter) {
                 let opt = document.createElement('option');
                 opt.value = `${s.n} (${getFriendlyName(s.l)})`;
@@ -302,6 +245,20 @@
         endInput.placeholder = mode === 'landmark' ? "Type a landmark..." : "Destination Station...";
     }
 
+    function findStation(input) {
+        let match = stations.find(s => `${s.n} (${getFriendlyName(s.l)})` === input);
+        if (match) return match;
+        match = stations.find(s => s.n.toLowerCase() === input.toLowerCase());
+        if (match) return match;
+        const lastParen = input.lastIndexOf(' (');
+        if (lastParen > -1) {
+            const potentialName = input.substring(0, lastParen);
+            match = stations.find(s => s.n.toLowerCase() === potentialName.toLowerCase());
+            if (match) return match;
+        }
+        return null;
+    }
+
     function findPath(startLine, endLine) {
         if(startLine === endLine) return [startLine];
         let queue = [[startLine]];
@@ -321,45 +278,30 @@
         return null;
     }
 
+    // --- HELPER: Get Station Object by Name & Line ---
+    function getStationByNameAndLine(name, lineCode) {
+        return stations.find(s => s.n === name && s.l === lineCode);
+    }
+
     function calculateRoute() {
         let startRaw = document.getElementById('start').value;
         let endRaw = document.getElementById('end').value;
         const resArea = document.getElementById('results-area');
 
-        const cleanName = (str) => str.split(' (')[0].trim();
-        let startName = cleanName(startRaw);
-        let endName = cleanName(endRaw);
-
+        let endInputVal = endRaw;
         if(searchMode === 'landmark') {
             const key = endRaw.toLowerCase();
-            let found = false;
             for(let k in landmarkMap) {
-                if(key.includes(k)) {
-                    endName = landmarkMap[k];
-                    found = true; break;
-                }
+                if(key.includes(k)) { endInputVal = landmarkMap[k]; break; }
             }
-            if(!found) { alert("Landmark not found"); return; }
         }
 
-        let startObj = stations.find(s => s.n.toLowerCase() === startName.toLowerCase());
-        let endObj = stations.find(s => s.n.toLowerCase() === endName.toLowerCase());
-        
-        if(startRaw.includes("(")) {
-             const lineHint = startRaw.split('(')[1].replace(')', '');
-             const specific = stations.find(s => s.n.toLowerCase() === startName.toLowerCase() && getFriendlyName(s.l).includes(lineHint.split(' ')[0]));
-             if(specific) startObj = specific;
-        }
-        if(endRaw.includes("(")) {
-             const lineHint = endRaw.split('(')[1].replace(')', '');
-             const specific = stations.find(s => s.n.toLowerCase() === endName.toLowerCase() && getFriendlyName(s.l).includes(lineHint.split(' ')[0]));
-             if(specific) endObj = specific;
-        }
+        const startObj = findStation(startRaw);
+        const endObj = findStation(endInputVal);
 
         if(!startObj || !endObj) { alert("Station not found. Please use the dropdown."); return; }
 
         resArea.style.display = 'block';
-
         const path = findPath(startObj.l, endObj.l);
         
         let html = `<div class="route-step"><div class="line-dot" style="background:#333"></div><div class="step-info"><h4>Start at ${startObj.n}</h4><p>Tap in at gate</p></div></div>`;
@@ -367,36 +309,58 @@
 
         if (path.length === 1) {
             const dist = Math.abs(startObj.idx - endObj.idx);
-            let fare = calculateExactFare(startObj.l, dist);
+            let fare = getStoredFare(startObj.l, dist, startObj.n, endObj.n);
             totalCost += fare;
             html += `<div class="route-step"><div class="line-dot bg-${startObj.l}"></div><div class="step-info"><h4>Ride ${getFriendlyName(startObj.l)}</h4><p>Travel ${dist} stations</p></div></div>`;
         } else {
+            // DYNAMIC LEG CALCULATION
             for(let i=0; i<path.length; i++) {
-                let curr = path[i];
-                let next = path[i+1];
+                let currLine = path[i];
+                let nextLine = path[i+1];
                 let dist = 5; 
-                
-                if(curr === 'SRT' && startObj.l === 'SRT') {
-                    let interName = (next === 'BTS_G' ? 'Phaya Thai' : 'Bang Sue Junction');
-                    let interObj = stations.find(s => s.l === 'SRT' && s.n === interName);
-                    if(interObj) dist = Math.abs(startObj.idx - interObj.idx);
-                }
-                
-                if(curr === 'BTS_G' && next === undefined) {
+                let legStartName, legEndName;
+
+                // 1. Determine Start Name for this leg
+                if (i === 0) {
+                    legStartName = startObj.n; 
+                } else {
+                    // Start of this leg is the interchange from prev line
                     let prevLine = path[i-1];
-                    let interName = getInterchange(prevLine, curr); 
-                    let pureName = interName.split(' / ')[0];
-                    let interObj = stations.find(s => s.l === curr && s.n === pureName);
-                    if(interObj) dist = Math.abs(interObj.idx - endObj.idx);
+                    let interStr = getInterchange(prevLine, currLine);
+                    legStartName = interStr.split(' / ')[0]; // Handle "Makkasan / Phetchaburi"
                 }
 
-                let fare = calculateExactFare(curr, dist);
+                // 2. Determine End Name for this leg
+                if (i === path.length - 1) {
+                    legEndName = endObj.n;
+                } else {
+                    // End of this leg is the interchange to next line
+                    let interStr = getInterchange(currLine, nextLine);
+                    // IMPORTANT: We need the name of the station on the CURRENT line
+                    // Example: BTS -> SRT. Interchange is "Phaya Thai". BTS stn is Phaya Thai.
+                    // Example: MRT -> ARL. Interchange is "Makkasan / Phetchaburi". 
+                    // If curr is MRT, name is Phetchaburi. If curr is ARL, name is Makkasan.
+                    // Simple hack: check which name exists in current line
+                    let candidates = interStr.split(' / ');
+                    legEndName = candidates.find(c => getStationByNameAndLine(c, currLine)) || candidates[0];
+                }
+
+                // 3. Calculate Distance
+                let sNode = getStationByNameAndLine(legStartName, currLine);
+                let eNode = getStationByNameAndLine(legEndName, currLine);
+                
+                if(sNode && eNode) {
+                    dist = Math.abs(sNode.idx - eNode.idx);
+                }
+
+                // 4. Get Fare
+                let fare = getStoredFare(currLine, dist, legStartName, legEndName);
                 totalCost += fare;
                 
-                html += `<div class="route-step"><div class="line-dot bg-${curr}"></div><div class="step-info"><h4>Take ${getFriendlyName(curr)}</h4><p>Fare: ~${fare}฿</p></div></div>`;
+                html += `<div class="route-step"><div class="line-dot bg-${currLine}"></div><div class="step-info"><h4>Take ${getFriendlyName(currLine)}</h4><p>Fare: ~${fare}฿</p></div></div>`;
                 
-                if(next) {
-                    let inter = getInterchange(curr, next);
+                if(nextLine) {
+                    let inter = getInterchange(currLine, nextLine);
                     html += `<div class="route-step"><div class="icon">🔄</div><div class="step-info"><h4>Transfer at ${inter}</h4><p>Walk to connecting line</p></div></div>`;
                 }
             }
@@ -408,19 +372,22 @@
         document.getElementById('res-price').innerText = `฿${totalCost}`;
     }
 
-    // --- 7. PRICING ENGINE ---
-    function calculateExactFare(line, distance) {
+    function getStoredFare(line, distance, sName, eName) {
         if(line === "SRT") {
-            if(distance < 15) return 6; 
-            return 20 + (distance * 2);
+            // Priority: Check if DESTINATION is in the fixed list (e.g. going TO Lat Krabang)
+            if (eName && FARE_TABLES.SRT[eName]) return FARE_TABLES.SRT[eName];
+            // Then check Start
+            if (sName && FARE_TABLES.SRT[sName]) return FARE_TABLES.SRT[sName];
+            
+            if (distance < 15) return 6; 
+            return 20;
         }
-        if(line === "Red" || line === "MRT_P") return Math.min(12 + (2 * distance), 20);
-        if(line === "BTS_G") return Math.min(17 + (4 * distance), 62);
-        if(line === "MRT_B") return Math.min(14 + (2 * distance), 43);
-        if(line === "ARL") return Math.min(15 + (5 * distance), 45);
-        if(line === "Gold") return 16;
-        if(line === "Yellow" || line === "Pink") return Math.min(15 + (3 * distance), 45);
-        return 45;
+        if(FARE_TABLES[line]) {
+            const table = FARE_TABLES[line];
+            if(distance < table.length) return table[distance];
+            return table[table.length - 1]; 
+        }
+        return 45; 
     }
 
     init();
