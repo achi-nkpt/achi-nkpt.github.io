@@ -13,6 +13,7 @@
         }
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: #1e293b; height: 100vh; display: flex; overflow: hidden; }
         
+        /* SIDEBAR */
         .sidebar { width: 280px; background: var(--sidebar-bg); color: white; padding: 25px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; overflow-y: auto; }
         .logo { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: white; text-decoration: none; }
         .nav-section { margin-bottom: 15px; }
@@ -23,6 +24,7 @@
         .nav-btn.link { border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #94a3b8; }
         .nav-btn.link:hover { border-color: white; color: white; }
 
+        /* MAIN CONTENT */
         .main { flex: 1; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
         .hero { height: 350px; flex-shrink: 0; position: relative; background: linear-gradient(to bottom, rgba(15,23,42,0.5), rgba(15,23,42,0.8)), url('https://internationalliving.com/_next/image/?url=https%3A%2F%2Fimages.ctfassets.net%2Fwv75stsetqy3%2FDaKdXY2tkQGWeVQiCbSx7%2Fac01166282697e4e0cafb99180d35cd1%2FThailand_Featured.jpg%3Fq%3D60%26fit%3Dfill%26fm%3Dwebp&w=1920&q=60') center/cover; }
         .search-container { max-width: 800px; margin: -100px auto 40px; padding: 0 20px; position: relative; z-index: 10; width: 100%; box-sizing: border-box; }
@@ -46,6 +48,19 @@
         .step-info h4 { margin: 0; font-weight: 700; font-size: 1.05rem; }
         .step-info p { margin: 4px 0 0; color: #64748b; font-size: 0.9rem; }
         .disclaimer { margin-top: 20px; text-align: center; color: #94a3b8; font-size: 0.8rem; font-style: italic; }
+        
+        /* INFO SECTION STYLES (NEW) */
+        .info-section { max-width: 1000px; margin: 0 auto 40px; padding: 0 20px; width: 100%; box-sizing: border-box; }
+        .section-title { font-size: 1.5rem; font-weight: 800; color: var(--sidebar-bg); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .info-card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: 0.2s; border-left: 5px solid var(--primary); }
+        .info-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .info-card h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: #1e293b; }
+        .info-card p { margin: 0; font-size: 0.95rem; color: #64748b; line-height: 1.6; }
+        
+        .credits { margin-top: 25px; padding-top: 15px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 0.85rem; color: #64748b; }
+        .credits a { color: var(--primary); text-decoration: none; font-weight: 600; }
+
         .bg-BTS_G { background: var(--c-bts-g); } .bg-BTS_S { background: var(--c-bts-s); } .bg-MRT_B { background: var(--c-mrt-b); } .bg-MRT_P { background: var(--c-mrt-p); }
         .bg-ARL { background: var(--c-arl); } .bg-Red { background: var(--c-red); } .bg-SRT { background: var(--c-srt); } .bg-Yellow { background: var(--c-yl); } .bg-Pink { background: var(--c-pk); } .bg-Gold { background: var(--c-gold); }
         @media (max-width: 900px) { body { flex-direction: column; overflow: auto; height: auto; } .sidebar { width: 100%; height: auto; padding: 20px; box-sizing: border-box; } .main { overflow: visible; } .hero { height: 250px; } .search-container { margin-top: -80px; } .form-grid { grid-template-columns: 1fr; } }
@@ -78,21 +93,18 @@
     </div>
     <div class="nav-section">
         <div class="nav-label">Tools</div>
-        <button class="nav-btn link" onclick="window.open('https://www.railway.co.th/SRTTimetable/StationList', '_blank')">
-            🕒 SRT Timetable
-        </button>
-        <button class="nav-btn link" onclick="window.open('https://www.bangkoktransitmap.com/', '_blank')">
-            🗺️ Official System Map
-        </button>
+        <button class="nav-btn link" onclick="window.open('https://www.bangkoktransitmap.com/', '_blank')">🗺️ Official System Map</button>
+        <button class="nav-btn link" onclick="window.open('https://www.railway.co.th/SRTTimetable/StationList', '_blank')">🕒 SRT Timetable</button>
     </div>
 </div>
 
 <div class="main">
     <div class="hero"></div>
+    
     <div class="search-container">
         <div class="search-card">
             <h1>Route Finder</h1>
-            <p class="sub">Bangkok's most accurate transit routing engine.</p>
+            <p class="sub">Bangkok's best transit routing engine.</p>
             <div class="form-grid">
                 <div class="input-group">
                     <label>Start From</label>
@@ -119,6 +131,57 @@
             <div class="disclaimer">EasyRail Thailand can make mistakes, please check twice.</div>
         </div>
     </div>
+
+    <div class="info-section">
+        <div class="section-title">🚆 Thailand Train Guide</div>
+        <div class="info-grid">
+            <div class="info-card" style="border-color: #16a34a;">
+                <h3>BTS Skytrain (Green)</h3>
+                <p>The <strong>BTS Skytrain</strong> is the fastest way to get around downtown Bangkok. It has two lines: the Sukhumvit Line (Khu Khot to Kheha) and the Silom Line (National Stadium to Bang Wa). It covers major shopping areas like Siam, Chit Lom, and Chatuchak Market.</p>
+            </div>
+            <div class="info-card" style="border-color: #1d4ed8;">
+                <h3>MRT Subway (Blue/Purple)</h3>
+                <p>The <strong>MRT Blue Line</strong> loops around Bangkok, connecting the old city (Grand Palace, Chinatown) with the new business districts (Asok, Rama 9). It connects with the BTS at several points like Sukhumvit and Silom.</p>
+            </div>
+            <div class="info-card" style="border-color: #701a75;">
+                <h3>Airport Rail Link (ARL)</h3>
+                <p>The <strong>ARL</strong> connects Suvarnabhumi Airport (BKK) directly to Phaya Thai station in the city center. It takes about 30 minutes and is much cheaper than a taxi. It's the best option for arriving tourists.</p>
+            </div>
+            <div class="info-card" style="border-color: #b91c1c;">
+                <h3>SRT Red Line</h3>
+                <p>The new <strong>SRT Red Line</strong> is a commuter train connecting Bangkok (Bang Sue Grand Station) to the northern suburbs (Rangsit) and Don Mueang Airport (DMK). It is modern, electric, and very affordable.</p>
+            </div>
+            <div class="info-card" style="border-color: #854d0e;">
+                <h3>SRT Intercity Trains</h3>
+                <p>The classic diesel trains operated by the State Railway of Thailand. These trains take you outside Bangkok to places like <strong>Ayutthaya, Hua Hin, Pattaya, and Chiang Mai</strong>. Prices for 3rd class tickets are extremely cheap.</p>
+            </div>
+        </div>
+
+        <div class="section-title">📍 Popular Destinations</div>
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>Bangkok Highlights</h3>
+                <p>Visit the <strong>Grand Palace</strong> and <strong>Wat Arun</strong> via MRT Sanam Chai. Shop at <strong>Siam Paragon</strong> (BTS Siam) or explore the weekend market at <strong>Chatuchak</strong> (BTS Mo Chit / MRT Chatuchak Park).</p>
+            </div>
+            <div class="info-card">
+                <h3>Ayutthaya Ancient City</h3>
+                <p>Take an SRT train from Bang Sue Junction or Hua Lamphong. The trip takes 1.5-2 hours. You will see ancient temples and ruins from the old capital of Thailand. Fare is as low as 15 Baht.</p>
+            </div>
+            <div class="info-card">
+                <h3>Pattaya & Beaches</h3>
+                <p>Pattaya is famous for its beaches and nightlife (Walking Street). You can take a train from Bangkok to Pattaya station. It is a cost-effective way to reach the eastern coast.</p>
+            </div>
+            <div class="info-card">
+                <h3>Chiang Mai (North)</h3>
+                <p>The northern capital of Thailand. Famous for <strong>Doi Suthep</strong> temple and the cool mountain weather. The overnight sleeper train from Bangkok is a popular experience for travelers.</p>
+            </div>
+        </div>
+
+        <div class="credits">
+            Created by Achirawat Nikropitak contact: <a href="https://sites.google.com/view/achi-nkpt/home" target="_blank">Click here</a>
+        </div>
+    </div>
+
 </div>
 
 <datalist id="stations-list"></datalist>
@@ -142,7 +205,6 @@
     // ==========================================
     // 1. FARE TABLES (Nov 2025)
     // ==========================================
-    // Index 2 = 25 Baht confirmed for BTS
     const FARE_TABLES = {
         "BTS_G": [0, 17, 25, 28, 32, 35, 40, 43, 47, 52, 57, 62, 65, 65, 65, 65, 65],
         "BTS_S": [0, 17, 25, 28, 32, 35, 40, 43, 47, 52, 57, 62],
@@ -278,9 +340,10 @@
         return null;
     }
 
-    // --- HELPER: Get Station Object by Name & Line ---
-    function getStationByNameAndLine(name, lineCode) {
-        return stations.find(s => s.n === name && s.l === lineCode);
+    // Helper: Find station index dynamically
+    function getStationIndex(name, lineCode) {
+        const s = stations.find(st => st.n.toLowerCase() === name.toLowerCase() && st.l === lineCode);
+        return s ? s.idx : -1;
     }
 
     function calculateRoute() {
@@ -313,7 +376,7 @@
             totalCost += fare;
             html += `<div class="route-step"><div class="line-dot bg-${startObj.l}"></div><div class="step-info"><h4>Ride ${getFriendlyName(startObj.l)}</h4><p>Travel ${dist} stations</p></div></div>`;
         } else {
-            // DYNAMIC LEG CALCULATION
+            // DYNAMIC CALCULATION LOGIC
             for(let i=0; i<path.length; i++) {
                 let currLine = path[i];
                 let nextLine = path[i+1];
@@ -324,33 +387,28 @@
                 if (i === 0) {
                     legStartName = startObj.n; 
                 } else {
-                    // Start of this leg is the interchange from prev line
                     let prevLine = path[i-1];
                     let interStr = getInterchange(prevLine, currLine);
-                    legStartName = interStr.split(' / ')[0]; // Handle "Makkasan / Phetchaburi"
+                    // Match interchange name to current line (handle "Makkasan / Phetchaburi")
+                    let options = interStr.split(' / ');
+                    legStartName = options.find(opt => getStationIndex(opt, currLine) !== -1) || options[0];
                 }
 
                 // 2. Determine End Name for this leg
                 if (i === path.length - 1) {
                     legEndName = endObj.n;
                 } else {
-                    // End of this leg is the interchange to next line
                     let interStr = getInterchange(currLine, nextLine);
-                    // IMPORTANT: We need the name of the station on the CURRENT line
-                    // Example: BTS -> SRT. Interchange is "Phaya Thai". BTS stn is Phaya Thai.
-                    // Example: MRT -> ARL. Interchange is "Makkasan / Phetchaburi". 
-                    // If curr is MRT, name is Phetchaburi. If curr is ARL, name is Makkasan.
-                    // Simple hack: check which name exists in current line
-                    let candidates = interStr.split(' / ');
-                    legEndName = candidates.find(c => getStationByNameAndLine(c, currLine)) || candidates[0];
+                    let options = interStr.split(' / ');
+                    legEndName = options.find(opt => getStationIndex(opt, currLine) !== -1) || options[0];
                 }
 
-                // 3. Calculate Distance
-                let sNode = getStationByNameAndLine(legStartName, currLine);
-                let eNode = getStationByNameAndLine(legEndName, currLine);
+                // 3. Calculate Dynamic Distance
+                let idx1 = getStationIndex(legStartName, currLine);
+                let idx2 = getStationIndex(legEndName, currLine);
                 
-                if(sNode && eNode) {
-                    dist = Math.abs(sNode.idx - eNode.idx);
+                if(idx1 !== -1 && idx2 !== -1) {
+                    dist = Math.abs(idx1 - idx2);
                 }
 
                 // 4. Get Fare
@@ -374,11 +432,8 @@
 
     function getStoredFare(line, distance, sName, eName) {
         if(line === "SRT") {
-            // Priority: Check if DESTINATION is in the fixed list (e.g. going TO Lat Krabang)
             if (eName && FARE_TABLES.SRT[eName]) return FARE_TABLES.SRT[eName];
-            // Then check Start
             if (sName && FARE_TABLES.SRT[sName]) return FARE_TABLES.SRT[sName];
-            
             if (distance < 15) return 6; 
             return 20;
         }
